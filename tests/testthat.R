@@ -13,4 +13,4 @@ err <- rlang::catch_cnd(
 )
 expect_is(err, "error")
 
-test_check("testthat", filter = "^[s]")
+test_check("testthat", filter = "^[w]")
