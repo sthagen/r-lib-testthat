@@ -1,7 +1,7 @@
 #' Expectation: does object have names?
 #'
 #' You can either check for the presence of names (leaving `expected`
-#' blank), specific names (by suppling a vector of names), or absence of
+#' blank), specific names (by supplying a vector of names), or absence of
 #' names (with `NULL`).
 #'
 #' @inheritParams expect_that
@@ -11,7 +11,6 @@
 #'   ignore the effect of order.
 #' @param ignore.case If `TRUE`, lowercases all names to ignore the
 #'   effect of case.
-#' @param ... Other arguments passed on to [has_names()].
 #' @family expectations
 #' @export
 #' @examples
