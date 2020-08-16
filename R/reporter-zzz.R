@@ -1,6 +1,3 @@
-#' @include reporter-stop.R
-NULL
-
 #' Get and set active reporter.
 #'
 #' `get_reporter()` and `set_reporter()` access and modify the current "active"
@@ -21,12 +18,6 @@ NULL
 #' @keywords internal
 #' @name reporter-accessors
 NULL
-
-testthat_env <- new.env(parent = emptyenv())
-
-# Default has to be the stop reporter, since it is this that will be run by
-# default from the command line and in R CMD test.
-testthat_env$reporter <- StopReporter$new()
 
 #' @rdname reporter-accessors
 #' @export
@@ -64,6 +55,15 @@ with_reporter <- function(reporter, code, start_end_reporter = TRUE) {
   }
 
   invisible(reporter)
+}
+
+stop_reporter <- function(message) {
+  if (is.null(findRestart("testthat_abort_reporter"))) {
+    abort(message)
+  } else {
+    cat(message, "\n")
+    invokeRestart("testthat_abort_reporter")
+  }
 }
 
 #' Find reporter object given name or object.

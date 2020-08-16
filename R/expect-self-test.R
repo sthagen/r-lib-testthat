@@ -1,6 +1,3 @@
-#' @include reporter.R
-NULL
-
 #' Tools for testing expectations
 #'
 #' Use these expectations to test other expectations.
@@ -50,6 +47,10 @@ expect_failure <- function(expr, message = NULL, ...) {
   invisible(NULL)
 }
 
+expect_skip <- function(code, regexp = NULL) {
+  expect_condition(code, regexp, class = "skip")
+}
+
 #' @export
 #' @rdname expect_success
 show_failure <- function(expr) {
@@ -63,17 +64,43 @@ show_failure <- function(expr) {
   invisible()
 }
 
-#' @export
-#' @rdname expect_success
-#' @param path Path to save failure output
-expect_known_failure <- function(path, expr) {
-  FailureReporter <- R6::R6Class("FailureReporter",
-    inherit = CheckReporter,
-    public = list(end_reporter = function(...) {})
-  )
-
-  expect_known_output(
-    with_reporter(test_that("", expr), reporter = FailureReporter$new()),
-    path
-  )
+expect_snapshot_failure <- function(x) {
+  expect_snapshot_error(x, "expectation_failure")
 }
+
+expect_snapshot_reporter <- function(reporter, path = test_path("reporters/tests.R")) {
+  withr::local_rng_version("3.3")
+  withr::with_seed(1014, {
+    expect_snapshot_output(
+      with_reporter(
+        reporter,
+        test_one_file(path)
+      )
+    )
+  })
+}
+
+# Use specifically for testthat tests in order to override the
+# defaults found when starting the reporter
+local_output_override <- function(width = 80, crayon = TRUE, unicode = TRUE,
+                                  .env = parent.frame()) {
+  reporter <- get_reporter()
+  if (is.null(reporter)) {
+    return()
+  }
+
+  old_width <- reporter$width
+  old_crayon <- reporter$crayon
+  old_unicode <- reporter$unicode
+
+  reporter$width <- width
+  reporter$crayon <- crayon
+  reporter$unicode <- unicode
+
+  withr::defer({
+    reporter$width <- old_width
+    reporter$crayon <- old_crayon
+    reporter$unicode <- old_unicode
+  }, .env)
+}
+

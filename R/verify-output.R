@@ -76,54 +76,40 @@
 verify_output <- function(path, code, width = 80, crayon = FALSE,
                           unicode = FALSE, env = caller_env()) {
 
+  local_reproducible_output(width = width, crayon = crayon, unicode = unicode)
+
   expr <- substitute(code)
-  if (is_call(expr, "{")) {
-    exprs <- as.list(expr[-1])
-  } else {
-    exprs <- list(expr)
-  }
+  output <- verify_exec(expr, env = env)
 
-  output <- verify_exec(exprs,
-    width = width,
-    crayon = crayon,
-    unicode = unicode,
-    env = env
-  )
-
-  if (is_testing() && on_cran()) {
+  if (!interactive() && on_cran()) {
     skip("On CRAN")
   }
   compare_file(path, output, update = TRUE)
   invisible()
 }
 
-verify_exec <- function(exprs,
-                        width = 80,
-                        crayon = FALSE,
-                        unicode = FALSE,
-                        env = caller_env()) {
+verify_exec <- function(expr, env = caller_env(), replay = output_replay) {
 
-  withr::local_options(list(
-    width = width,
-    crayon.enabled = crayon,
-    cli.unicode = unicode
-  ))
-  withr::local_envvar(list(
-    RSTUDIO = 0,
-    RSTUDIO_CONSOLE_WIDTH = width
-  ))
+  if (is_call(expr, "{")) {
+    exprs <- as.list(expr[-1])
+  } else {
+    exprs <- list(expr)
+  }
+
+  withr::local_pdf(tempfile())
+  grDevices::dev.control(displaylist = "enable")
 
   exprs <- lapply(exprs, function(x) if (is.character(x)) paste0("# ", x) else expr_deparse(x))
   source <- unlist(exprs, recursive = FALSE)
 
-  # Open temporary new device
-  grDevices::png(filename = tempfile())
-  grDevices::dev.control(displaylist = "enable")
-  dev <- grDevices::dev.cur()
-  on.exit(grDevices::dev.off(dev), add = TRUE)
-
-  results <- evaluate::evaluate(source, envir = env, new_device = FALSE)
-  unlist(lapply(results, output_replay))
+  handler <- evaluate::new_output_handler(value = testthat_print)
+  results <- evaluate::evaluate(source, envir = env,
+    new_device = FALSE,
+    output_handler = handler
+  )
+  output <- unlist(lapply(results, replay))
+  output <- gsub("\r", "", output, fixed = TRUE)
+  output
 }
 
 output_replay <- function(x) {
