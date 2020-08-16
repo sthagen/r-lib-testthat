@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Run all tests in directory or package — test_dir • testthat</title>
+<title>Run all tests in a directory — test_dir • testthat</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,17 +46,12 @@
 
 
 
-<meta property="og:title" content="Run all tests in directory or package — test_dir" />
-<meta property="og:description" content="Use test_dir() for a collection of tests in a directory; use
-test_package() interactively at the console, and test_check()
-inside of R CMD check.
-In your own code, you can use is_testing() to determine if code is being
-run as part of a test and testing_package() to retrieve the name of the
-package being tested. You can also check the underlying env var directly
-identical(Sys.getenv(&quot;TESTTHAT&quot;), &quot;true&quot;) to avoid creating a run-time
-dependency on testthat." />
-<meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Run all tests in a directory — test_dir" />
+<meta property="og:description" content="Execute code in the specified file, displaying results using a reporter.
+Use this function when you want to run a single file's worth of tests.
+You are responsible for ensuring that the functions to test are available
+in the global environment." />
+<meta property="og:image" content="https://testthat.r-lib.org/logo.png" />
 
 
 
@@ -80,7 +79,7 @@ dependency on testthat." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -94,13 +93,19 @@ dependency on testthat." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.99.0.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -113,6 +118,21 @@ dependency on testthat." />
     <li>
       <a href="../articles/custom-expectation.html">Custom expectations</a>
     </li>
+    <li>
+      <a href="../articles/parallel.html">Running tests in parallel</a>
+    </li>
+    <li>
+      <a href="../articles/skipping.html">Skipping tests</a>
+    </li>
+    <li>
+      <a href="../articles/snapshotting.html">Snapshot tests</a>
+    </li>
+    <li>
+      <a href="../articles/test-fixtures.html">Test fixtures</a>
+    </li>
+    <li>
+      <a href="../articles/third-edition.html">testthat 3e</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -122,7 +142,7 @@ dependency on testthat." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Release notes</li>
+    <li class="dropdown-header">Releases</li>
     <li>
       <a href="https://www.tidyverse.org/blog/2019/11/testthat-2-3-0/">Version 2.3.0</a>
     </li>
@@ -143,14 +163,14 @@ dependency on testthat." />
     </li>
     <li class="divider"></li>
     <li>
-      <a href="../news/index.html">Change log</a>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/testthat">
+  <a href="https://github.com/r-lib/testthat/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -168,35 +188,31 @@ dependency on testthat." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Run all tests in directory or package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/testthat/blob/master/R/test-directory.R'><code>R/test-directory.R</code></a></small>
+    <h1>Run all tests in a directory</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/testthat/blob/master/R/test-files.R'><code>R/test-files.R</code></a></small>
     <div class="hidden name"><code>test_dir.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Use <code>test_dir()</code> for a collection of tests in a directory; use
-<code>test_package()</code> interactively at the console, and <code>test_check()</code>
-inside of <code>R CMD check</code>.</p>
-<p>In your own code, you can use <code>is_testing()</code> to determine if code is being
-run as part of a test and <code>testing_package()</code> to retrieve the name of the
-package being tested. You can also check the underlying env var directly
-<code><a href='https://rdrr.io/r/base/identical.html'>identical(Sys.getenv("TESTTHAT"), "true")</a></code> to avoid creating a run-time
-dependency on testthat.</p>
+    <p>Execute code in the specified file, displaying results using a <code>reporter</code>.
+Use this function when you want to run a single file's worth of tests.
+You are responsible for ensuring that the functions to test are available
+in the global environment.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>test_dir</span>(<span class='no'>path</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reporter</span> <span class='kw'>=</span> <span class='fu'><a href='default_reporter.html'>default_reporter</a></span>(),
-  <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='test_env.html'>test_env</a></span>(), <span class='no'>...</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"unknown"</span>, <span class='kw'>load_helpers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>stop_on_failure</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>stop_on_warning</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>test_package</span>(<span class='no'>package</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reporter</span> <span class='kw'>=</span> <span class='fu'><a href='default_reporter.html'>check_reporter</a></span>(), <span class='no'>...</span>,
-  <span class='kw'>stop_on_failure</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>stop_on_warning</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>test_check</span>(<span class='no'>package</span>, <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reporter</span> <span class='kw'>=</span> <span class='fu'><a href='default_reporter.html'>check_reporter</a></span>(), <span class='no'>...</span>,
-  <span class='kw'>stop_on_failure</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>stop_on_warning</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>is_testing</span>()
-
-<span class='fu'>testing_package</span>()</pre>
+    <pre class="usage"><span class='fu'>test_dir</span>(
+  <span class='no'>path</span>,
+  <span class='kw'>filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>reporter</span> <span class='kw'>=</span> <span class='fu'><a href='default_reporter.html'>default_reporter</a></span>(),
+  <span class='kw'>env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>load_helpers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>stop_on_failure</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>stop_on_warning</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>wrap</span> <span class='kw'>=</span> <span class='kw pkg'>lifecycle</span><span class='kw ns'>::</span><span class='fu'><a href='https://lifecycle.r-lib.org/reference/deprecated.html'>deprecated</a></span>(),
+  <span class='kw'>package</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>load_package</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"installed"</span>, <span class='st'>"source"</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -208,8 +224,8 @@ dependency on testthat.</p>
     <tr>
       <th>filter</th>
       <td><p>If not <code>NULL</code>, only tests with file names matching this
-regular expression will be executed. Matching be performed on the file
-name after it has been stripped of <code>"test-"</code> and <code>".R"</code>.</p></td>
+regular expression will be executed. Matching is performed on the file
+name after it's stripped of <code>"test-"</code> and <code>".R"</code>.</p></td>
     </tr>
     <tr>
       <th>reporter</th>
@@ -227,21 +243,13 @@ as a string (e.g. "summary") or as an R6 object
       <td><p>Additional arguments passed to <code><a href='https://rdrr.io/r/base/grep.html'>grepl()</a></code> to control filtering.</p></td>
     </tr>
     <tr>
-      <th>encoding</th>
-      <td><p>Deprecated. All files now assumed to be UTF-8.</p></td>
-    </tr>
-    <tr>
       <th>load_helpers</th>
       <td><p>Source helper files before running the tests?
 See <code><a href='source_file.html'>source_test_helpers()</a></code> for more details.</p></td>
     </tr>
     <tr>
       <th>stop_on_failure</th>
-      <td><p>If <code>TRUE</code>, throw an error if any tests fail.</p>
-<p>For historical reasons, the default value of <code>stop_on_failure</code> is <code>TRUE</code>
-for  <code>test_package()</code> and <code>test_check()</code> but <code>FALSE</code> for <code>test_dir()</code>, so
-if you're calling <code>test_dir()</code> you may want to consider explicitly setting
-<code>stop_on_failure = TRUE</code>.</p></td>
+      <td><p>If <code>TRUE</code>, throw an error if any tests fail.</p></td>
     </tr>
     <tr>
       <th>stop_on_warning</th>
@@ -250,33 +258,48 @@ warnings.</p></td>
     </tr>
     <tr>
       <th>wrap</th>
-      <td><p>Automatically wrap all code within <code><a href='test_that.html'>test_that()</a></code>? This ensures
-that all expectations are reported, even if outside a test block.</p></td>
+      <td><p>DEPRECATED</p></td>
     </tr>
     <tr>
       <th>package</th>
-      <td><p>Name of installed package.</p></td>
+      <td><p>If these tests belong to a package, the name of the package.</p></td>
+    </tr>
+    <tr>
+      <th>load_package</th>
+      <td><p>Strategy to use for load package code:</p><ul>
+<li><p>"none", the default, doesn't load the package.</p></li>
+<li><p>"installed", uses <code><a href='https://rdrr.io/r/base/library.html'>library()</a></code> to load an installed package.</p></li>
+<li><p>"source", uses <code><a href='https://rdrr.io/pkg/pkgload/man/load_all.html'>pkgload::load_all()</a></code> to a source package.</p></li>
+</ul></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of test results.</p>
-    <h2 class="hasAnchor" id="test-files"><a class="anchor" href="#test-files"></a>Test files</h2>
+    <p>A list (invisibly) containing data about the test results.</p>
+    <h2 class="hasAnchor" id="special-files"><a class="anchor" href="#special-files"></a>Special files</h2>
 
     
 
-<p>For package code, tests should live in <code>tests/testthat</code>.</p>
-<p>There are four classes of <code>.R</code> files that have special behaviour:</p><ul>
+<p>There are two types of <code>.R</code> file that have special behaviour:</p><ul>
 <li><p>Test files start with <code>test</code> and are executed in alphabetical order.</p></li>
-<li><p>Helper files start with <code>helper</code> and are executed before tests are
-run and from <code><a href='https://rdrr.io/pkg/devtools/man/load_all.html'>devtools::load_all()</a></code>.</p></li>
-<li><p>Setup files start with <code>setup</code> and are executed before tests, but not
-during <code><a href='https://rdrr.io/pkg/devtools/man/load_all.html'>devtools::load_all()</a></code>.</p></li>
-<li><p>Teardown files start with <code>teardown</code> and are executed after the tests
-are run.</p></li>
+<li><p>Setup files start with <code>setup</code> and are executed before tests. If
+clean up is needed after all tests have been run, you can use
+<code><a href='https://rdrr.io/pkg/withr/man/defer.html'>withr::defer(clean_up(), teardown_env())</a></code>. See <code>vignette("text-fixtures)</code>
+for more details.</p></li>
 </ul>
 
+<p>There are two other types of special file that we no longer recommend using:</p><ul>
+<li><p>Helper files start with <code>helper</code> and are executed before tests are
+run. They're also loaded by <code>devtools::load_all()</code>, so there's no
+real point to them and you should just put your helper code in <code>R/</code>.</p></li>
+<li><p>Teardown files start with <code>teardown</code> and are executed after the tests
+are run. Now we recommend interleave setup and cleanup code in <code>setup-</code>
+files, making it easier to check that you automatically clean up every
+mess that you make.</p></li>
+</ul>
+
+<p>All other files are ignored by testthat.</p>
     <h2 class="hasAnchor" id="environments"><a class="anchor" href="#environments"></a>Environments</h2>
 
     
@@ -285,45 +308,12 @@ are run.</p></li>
 possible. For package tests, that environment that inherits from the
 package's namespace environment, so that tests can access internal functions
 and objects.</p>
-    <h2 class="hasAnchor" id="r-cmd-check"><a class="anchor" href="#r-cmd-check"></a><code>R CMD check</code></h2>
 
-    
-
-<p>To run testthat automatically from <code>R CMD check</code>, make sure you have
-a <code>tests/testthat.R</code> that contains:</p><pre>library(testthat)
-library(yourpackage)
-
-test_check("yourpackage")
-</pre>
-
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>test_dir</span>(<span class='fu'><a href='testthat_examples.html'>testthat_examples</a></span>(), <span class='kw'>reporter</span> <span class='kw'>=</span> <span class='st'>"summary"</span>)</div><div class='output co'>#&gt; <span style='color: #00BB00;'>.</span><span style='color: #BB0000;'>1</span><span style='color: #00BB00;'>.</span><span style='color: #0000BB;'>S</span><span style='color: #BB00BB;'>W</span><span style='color: #00BB00;'>...</span><span>
-#&gt; ══ Skipped ═════════════════════════════════════════════════════════════════════
-#&gt; </span><span style='color: #0000BB;'>1. you can skip tests if needed</span><span> (@test-success.R#6) - Reason: This tests hasn't been written yet
-#&gt; 
-#&gt; ══ Warnings ════════════════════════════════════════════════════════════════════
-#&gt; </span><span style='color: #0000BB;'>1. some tests have warnings</span><span> (@test-success.R#10) - NaNs produced
-#&gt; 
-#&gt; ══ Failed ══════════════════════════════════════════════════════════════════════
-#&gt; </span><span style='color: #BB0000;'>──</span><span> </span><span style='color: #BB0000;'>1. Failure: two plus two is four (@test-failure.R#8) </span><span> </span><span style='color: #BB0000;'>───────────────────────</span><span>
-#&gt; plus(2, 2) not equal to 4.
-#&gt; 1/1 mismatches
-#&gt; [1] 2 - 4 == -2
-#&gt; 
-#&gt; ══ DONE ════════════════════════════════════════════════════════════════════════</div><div class='input'><span class='fu'>test_dir</span>(<span class='fu'><a href='testthat_examples.html'>testthat_examples</a></span>(), <span class='kw'>reporter</span> <span class='kw'>=</span> <span class='st'>"minimal"</span>)</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>.</span><span style='color: #BB0000;'>F</span><span style='color: #00BB00;'>.</span><span style='color: #0000BB;'>S</span><span style='color: #BB00BB;'>W</span><span style='color: #00BB00;'>...</span><span></div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#test-files">Test files</a></li>
-      <li><a href="#environments">Environments</a></li>
-      <li><a href="#r-cmd-check"><code>R CMD check</code></a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -334,7 +324,7 @@ test_check("yourpackage")
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

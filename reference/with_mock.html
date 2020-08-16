@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -43,12 +47,20 @@
 
 
 <meta property="og:title" content="Mock functions in a package. — with_mock" />
-<meta property="og:description" content="Executes code after temporarily substituting implementations of package
-functions.  This is useful for testing code that relies on functions that are
-slow, have unintended side effects or access resources that may not be
-available when testing." />
-<meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:description" content="
+with_mock() and local_mock() are superseded in favour of the more
+rigorous techniques found in the mockr
+and mockery packages.
+Mocking allows you to temporary replace the implementation of functions
+within a package, which useful for testing code that relies on functions
+that are slow, have unintended side effects or access resources that may
+not be available when testing.
+This works by using some C code to temporarily modify the mocked function
+in place. On exit, all functions are restored to their previous state.
+This is somewhat abusive of R's internals so use with care. In particular,
+functions in base packages cannot be mocked; to work aroud you'll need to
+make a wrapper function in your own package.." />
+<meta property="og:image" content="https://testthat.r-lib.org/logo.png" />
 
 
 
@@ -76,7 +88,7 @@ available when testing." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -90,13 +102,19 @@ available when testing." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.99.0.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -109,6 +127,21 @@ available when testing." />
     <li>
       <a href="../articles/custom-expectation.html">Custom expectations</a>
     </li>
+    <li>
+      <a href="../articles/parallel.html">Running tests in parallel</a>
+    </li>
+    <li>
+      <a href="../articles/skipping.html">Skipping tests</a>
+    </li>
+    <li>
+      <a href="../articles/snapshotting.html">Snapshot tests</a>
+    </li>
+    <li>
+      <a href="../articles/test-fixtures.html">Test fixtures</a>
+    </li>
+    <li>
+      <a href="../articles/third-edition.html">testthat 3e</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -118,7 +151,7 @@ available when testing." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Release notes</li>
+    <li class="dropdown-header">Releases</li>
     <li>
       <a href="https://www.tidyverse.org/blog/2019/11/testthat-2-3-0/">Version 2.3.0</a>
     </li>
@@ -139,14 +172,14 @@ available when testing." />
     </li>
     <li class="divider"></li>
     <li>
-      <a href="../news/index.html">Change log</a>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/testthat">
+  <a href="https://github.com/r-lib/testthat/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -170,10 +203,19 @@ available when testing." />
     </div>
 
     <div class="ref-description">
-    <p>Executes code after temporarily substituting implementations of package
-functions.  This is useful for testing code that relies on functions that are
-slow, have unintended side effects or access resources that may not be
-available when testing.</p>
+    <p><a href='https://www.tidyverse.org/lifecycle/#superseded'><img src='figures/lifecycle-superseded.svg' alt='Superseded lifecycle'></a></p>
+<p><code>with_mock()</code> and <code>local_mock()</code> are superseded in favour of the more
+rigorous techniques found in the <a href='https://krlmlr.github.io/mockr/'>mockr</a>
+and <a href='https://github.com/r-lib/mockery#mockery'>mockery</a> packages.</p>
+<p>Mocking allows you to temporary replace the implementation of functions
+within a package, which useful for testing code that relies on functions
+that are slow, have unintended side effects or access resources that may
+not be available when testing.</p>
+<p>This works by using some C code to temporarily modify the mocked function
+<em>in place</em>. On exit, all functions are restored to their previous state.
+This is somewhat abusive of R's internals so use with care. In particular,
+functions in base packages cannot be mocked; to work aroud you'll need to
+make a wrapper function in your own package..</p>
     </div>
 
     <pre class="usage"><span class='fu'>with_mock</span>(<span class='no'>...</span>, <span class='kw'>.env</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ns-topenv.html'>topenv</a></span>())
@@ -204,13 +246,12 @@ For expert use only.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The result of the last unnamed parameter</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="-rd-edition"><a class="anchor" href="#-rd-edition"></a>3rd edition</h2>
 
-    <p>This works by using some C code to temporarily modify the mocked function <em>in place</em>.
-On exit (regular or error), all functions are restored to their previous state.
-This is somewhat abusive of R's internals, and is still experimental, so use with care.</p>
-<p>Functions in base packages cannot be mocked, but this can be
-worked around easily by defining a wrapper function.</p>
+    
+
+<p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
+<p><code>with_mock()</code> and <code>local_mock()</code> are deprecated in the third edition.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Suraj Gupta (2012): <a href='http://obeautifulcode.com/R/How-R-Searches-And-Finds-Stuff'>How R Searches And Finds Stuff</a></p>
@@ -234,29 +275,23 @@ worked around easily by defining a wrapper function.</p>
 <span class='no'>plus</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='no'>x</span> + <span class='no'>y</span>
 <span class='fu'><a href='test_that.html'>test_that</a></span>(<span class='st'>"plus(1, 1) == 2"</span>, {
   <span class='fu'><a href='equality-expectations.html'>expect_equal</a></span>(<span class='fu'>plus</span>(<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='fl'>2</span>)
-})
-
+})</div><div class='output co'>#&gt; <span style='color: #00BB00;'>Test passed</span><span> 😀</div><div class='input'>
 <span class='fu'><a href='test_that.html'>test_that</a></span>(<span class='st'>"plus(1, 1) == 3"</span>, {
   <span class='fu'>local_mock</span>(<span class='kw'>plus</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>, <span class='no'>y</span>) <span class='fl'>3</span>)
   <span class='fu'><a href='equality-expectations.html'>expect_equal</a></span>(<span class='fu'>plus</span>(<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='fl'>3</span>)
-})</div><div class='output co'>#&gt; <span class='error'>Error: Test failed: 'plus(1, 1) == 3'</span>
-#&gt; <span class='error'>* &lt;text&gt;:24: Function plus not found in environment testthat.</span>
-#&gt; <span class='error'><span style='font-weight: bold;'>Backtrace:</span><span></span>
-#&gt; <span class='error'></span><span style='color: #555555;'> 1. </span><span>testthat::local_mock(plus = function(x, y) 3)</span>
-#&gt; <span class='error'></span><span style='color: #555555;'> 2. </span><span>testthat:::extract_mocks(list(...), .env = .env)</span>
-#&gt; <span class='error'></span><span style='color: #555555;'> 3. </span><span>base::lapply(...)</span>
-#&gt; <span class='error'></span><span style='color: #555555;'> 4. </span><span>testthat:::FUN(X[[i]], ...)</span></div></span></pre>
+})</div><div class='output co'>#&gt; ── </span><span style='font-weight: bold;'>&lt;text&gt;:24:3: </span><span style='color: #BB0000;font-weight: bold;'>error</span><span style='font-weight: bold;'>: plus(1, 1) == 3</span><span> ─────────────────────────────────────────
+#&gt; Error: Function plus not found in environment testthat.
+#&gt; </span><span style='font-weight: bold;'>Backtrace:</span><span>
+#&gt; </span><span style='color: #555555;'> 1. </span><span>testthat::local_mock(plus = function(x, y) 3)
+#&gt; </span><span style='color: #555555;'> 2. </span><span>testthat:::extract_mocks(list(...), .env = .env)
+#&gt; </span><span style='color: #555555;'> 3. </span><span>base::lapply(...)
+#&gt; </span><span style='color: #555555;'> 4. </span><span>testthat:::FUN(X[[i]], ...)
+#&gt; </div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#references">References</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -267,7 +302,7 @@ worked around easily by defining a wrapper function.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

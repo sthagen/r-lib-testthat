@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -47,8 +51,7 @@
 expectations and display them in an informative way. Every testtthat function
 that runs multiple tests provides a reporter argument which you can
 use to override the default (which is selected by default_reporter())." />
-<meta property="og:image" content="/logo.png" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="https://testthat.r-lib.org/logo.png" />
 
 
 
@@ -76,7 +79,7 @@ use to override the default (which is selected by default_reporter())." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -90,13 +93,19 @@ use to override the default (which is selected by default_reporter())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.99.0.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -109,6 +118,21 @@ use to override the default (which is selected by default_reporter())." />
     <li>
       <a href="../articles/custom-expectation.html">Custom expectations</a>
     </li>
+    <li>
+      <a href="../articles/parallel.html">Running tests in parallel</a>
+    </li>
+    <li>
+      <a href="../articles/skipping.html">Skipping tests</a>
+    </li>
+    <li>
+      <a href="../articles/snapshotting.html">Snapshot tests</a>
+    </li>
+    <li>
+      <a href="../articles/test-fixtures.html">Test fixtures</a>
+    </li>
+    <li>
+      <a href="../articles/third-edition.html">testthat 3e</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -118,7 +142,7 @@ use to override the default (which is selected by default_reporter())." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li class="dropdown-header">Release notes</li>
+    <li class="dropdown-header">Releases</li>
     <li>
       <a href="https://www.tidyverse.org/blog/2019/11/testthat-2-3-0/">Version 2.3.0</a>
     </li>
@@ -139,14 +163,14 @@ use to override the default (which is selected by default_reporter())." />
     </li>
     <li class="divider"></li>
     <li>
-      <a href="../news/index.html">Change log</a>
+      <a href="../news/index.html">Changelog</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/r-lib/testthat">
+  <a href="https://github.com/r-lib/testthat/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -176,12 +200,8 @@ that runs multiple tests provides a <code>reporter</code> argument which you can
 use to override the default (which is selected by <code><a href='default_reporter.html'>default_reporter()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='no'>Reporter</span></pre>
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>You only need to use this <code>Reporter</code> object directly if you are creating
@@ -191,52 +211,46 @@ familiar with <a href='https://adv-r.hadley.nz/R6.html'>R6</a> and then need rea
 source code for a few.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other reporters: <code><a href='CheckReporter.html'>CheckReporter</a></code>,
-  <code><a href='DebugReporter.html'>DebugReporter</a></code>, <code><a href='FailReporter.html'>FailReporter</a></code>,
-  <code><a href='ListReporter.html'>ListReporter</a></code>,
-  <code><a href='LocationReporter.html'>LocationReporter</a></code>,
-  <code><a href='MinimalReporter.html'>MinimalReporter</a></code>,
-  <code><a href='MultiReporter.html'>MultiReporter</a></code>,
-  <code><a href='ProgressReporter.html'>ProgressReporter</a></code>,
-  <code><a href='RstudioReporter.html'>RstudioReporter</a></code>,
-  <code><a href='SilentReporter.html'>SilentReporter</a></code>, <code><a href='StopReporter.html'>StopReporter</a></code>,
-  <code><a href='SummaryReporter.html'>SummaryReporter</a></code>, <code><a href='TapReporter.html'>TapReporter</a></code>,
-  <code><a href='TeamcityReporter.html'>TeamcityReporter</a></code></p></div>
+    <div class='dont-index'><p>Other reporters: 
+<code><a href='CheckReporter.html'>CheckReporter</a></code>,
+<code><a href='DebugReporter.html'>DebugReporter</a></code>,
+<code><a href='FailReporter.html'>FailReporter</a></code>,
+<code><a href='ListReporter.html'>ListReporter</a></code>,
+<code><a href='LocationReporter.html'>LocationReporter</a></code>,
+<code><a href='MinimalReporter.html'>MinimalReporter</a></code>,
+<code><a href='MultiReporter.html'>MultiReporter</a></code>,
+<code><a href='ProgressReporter.html'>ProgressReporter</a></code>,
+<code><a href='RstudioReporter.html'>RstudioReporter</a></code>,
+<code><a href='SilentReporter.html'>SilentReporter</a></code>,
+<code><a href='StopReporter.html'>StopReporter</a></code>,
+<code><a href='SummaryReporter.html'>SummaryReporter</a></code>,
+<code><a href='TapReporter.html'>TapReporter</a></code>,
+<code><a href='TeamcityReporter.html'>TeamcityReporter</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>path</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='testthat_examples.html'>testthat_example</a></span>(<span class='st'>"success"</span>)
 
-<span class='co'># The default reporter - doesn't display well in examples because</span>
-<span class='co'># it's designed to work in an interactive console.</span>
-<span class='fu'><a href='test_file.html'>test_file</a></span>(<span class='no'>path</span>)</div><div class='output co'>#&gt; ✔ |  OK <span style='color: #BB0000;'>F</span><span> </span><span style='color: #BB00BB;'>W</span><span> </span><span style='color: #0000BB;'>S</span><span> | Context
-#&gt; ⠏ |   0       | success</span><span style='color: #00BB00;'>✔</span><span> |   4   1 1 | success
-#&gt; ────────────────────────────────────────────────────────────────────────────────
-#&gt; </span><span style='font-weight: bold;'>test-success.R:6: </span><span style='color: #0000BB;font-weight: bold;'>skip</span><span style='font-weight: bold;'>: you can skip tests if needed</span><span>
+<span class='fu'><a href='test_file.html'>test_file</a></span>(<span class='no'>path</span>)</div><div class='output co'>#&gt; 
+#&gt; ══ <span style='font-weight: bold;'>Testing test-success.R</span><span> ══════════════════════════════════════════════════════
+#&gt; [ </span><span style='color: #00BB00;'>PASS</span><span> x0 </span><span style='color: #BB0000;'>FAIL</span><span> x0 </span><span style='color: #BB00BB;'>WARN</span><span> x0 </span><span style='color: #0000BB;'>SKIP</span><span> x0 ][ </span><span style='color: #00BB00;'>PASS</span><span> x1 </span><span style='color: #BB0000;'>FAIL</span><span> x0 </span><span style='color: #BB00BB;'>WARN</span><span> x0 </span><span style='color: #0000BB;'>SKIP</span><span> x0 ][ </span><span style='color: #00BB00;'>PASS</span><span> x1 </span><span style='color: #BB0000;'>FAIL</span><span> x0 </span><span style='color: #BB00BB;'>WARN</span><span> x0 </span><span style='color: #0000BB;'>SKIP</span><span> x1 ][ </span><span style='color: #00BB00;'>PASS</span><span> x1 </span><span style='color: #BB0000;'>FAIL</span><span> x0 </span><span style='color: #BB00BB;'>WARN</span><span> x1 </span><span style='color: #0000BB;'>SKIP</span><span> x1 ][ </span><span style='color: #00BB00;'>PASS</span><span> x2 </span><span style='color: #BB0000;'>FAIL</span><span> x0 </span><span style='color: #BB00BB;'>WARN</span><span> x1 </span><span style='color: #0000BB;'>SKIP</span><span> x1 ][ </span><span style='color: #00BB00;'>PASS</span><span> x3 </span><span style='color: #BB0000;'>FAIL</span><span> x0 </span><span style='color: #BB00BB;'>WARN</span><span> x1 </span><span style='color: #0000BB;'>SKIP</span><span> x1 ][ </span><span style='color: #00BB00;'>PASS</span><span> x4 </span><span style='color: #BB0000;'>FAIL</span><span> x0 </span><span style='color: #BB00BB;'>WARN</span><span> x1 </span><span style='color: #0000BB;'>SKIP</span><span> x1 ]
+#&gt; 
+#&gt; ── </span><span style='font-weight: bold;'>test-success.R:6:3: </span><span style='color: #0000BB;font-weight: bold;'>skip</span><span style='font-weight: bold;'>: you can skip tests if needed</span><span> ──────────────────────
 #&gt; Reason: This tests hasn't been written yet
 #&gt; 
-#&gt; </span><span style='font-weight: bold;'>test-success.R:10: </span><span style='color: #BB00BB;font-weight: bold;'>warning</span><span style='font-weight: bold;'>: some tests have warnings</span><span>
+#&gt; ── </span><span style='font-weight: bold;'>test-success.R:10:3: </span><span style='color: #BB00BB;font-weight: bold;'>warning</span><span style='font-weight: bold;'>: some tests have warnings</span><span> ──────────────────────
 #&gt; NaNs produced
-#&gt; ────────────────────────────────────────────────────────────────────────────────
+#&gt; </span><span style='font-weight: bold;'>Backtrace:</span><span>
+#&gt; </span><span style='color: #555555;'> 1. </span><span>testthat::expect_equal(log(-1), NaN) </span><span style='color: #555555;'>test-success.R:10:2</span><span>
+#&gt; </span><span style='color: #555555;'> 2. </span><span>testthat::quasi_label(enquo(object), label, arg = "object")
+#&gt; </span><span style='color: #555555;'> 3. </span><span>rlang::eval_bare(expr, quo_get_env(quo))
 #&gt; 
-#&gt; ══ </span><span style='font-weight: bold;'>Results</span><span> ═════════════════════════════════════════════════════════════════════
-#&gt; OK:       </span><span style='color: #00BB00;'>4</span><span>
-#&gt; Failed:   </span><span style='color: #00BB00;'>0</span><span>
-#&gt; Warnings: </span><span style='color: #BB00BB;'>1</span><span>
-#&gt; Skipped:  </span><span style='color: #0000BB;'>1</span><span>
-#&gt; 
-#&gt; </span><span style='color: #00BB00;'>Woot!</span><span></div><div class='input'>
-<span class='co'># Override the default by supplying the name of a reporter</span>
-<span class='fu'><a href='test_file.html'>test_file</a></span>(<span class='no'>path</span>, <span class='kw'>reporter</span> <span class='kw'>=</span> <span class='st'>"minimal"</span>)</div><div class='output co'>#&gt; </span><span style='color: #00BB00;'>.</span><span style='color: #0000BB;'>S</span><span style='color: #BB00BB;'>W</span><span style='color: #00BB00;'>...</span><span></div></span></pre>
+#&gt; [ </span><span style='color: #00BB00;'>PASS</span><span> x4 </span><span style='color: #BB0000;'>FAIL</span><span> x0 </span><span style='color: #BB00BB;'>WARN</span><span> x1 </span><span style='color: #0000BB;'>SKIP</span><span> x1 ]</div><div class='input'><span class='co'># Override the default by supplying the name of a reporter</span>
+<span class='fu'><a href='test_file.html'>test_file</a></span>(<span class='no'>path</span>, <span class='kw'>reporter</span> <span class='kw'>=</span> <span class='st'>"minimal"</span>)</div><div class='output co'>#&gt; .SW...</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -247,7 +261,7 @@ source code for a few.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
