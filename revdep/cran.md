@@ -1,155 +1,134 @@
 ## revdepcheck results
 
-We checked 2773 reverse dependencies (2499 from CRAN + 274 from BioConductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 2499 reverse dependencies (2484 from CRAN + 15 from BioConductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 41 new problems
- * We failed to check 17 packages
+ * We saw 21 new problems
+ * We failed to check 56 packages
 
 Issues with CRAN packages are summarised below.
 
 ### New problems
 (This reports the first line of each new failure)
 
-* antaresRead
-  checking tests ...
+* bayesCT
+  checking tests ... ERROR
 
-* autovarCore
-  checking tests ...
-
-* batchtools
-  checking tests ...
-
-* binman
-  checking tests ...
-
-* callr
-  checking tests ...
-
-* checkpoint
-  checking tests ...
-
-* civis
-  checking tests ...
-
-* clust.bin.pair
-  checking tests ...
-
-* Crossover
-  checking tests ...
-
-* data.world
-  checking tests ...
-
-* diffobj
-  checking tests ...
-
-* dwapi
-  checking tests ...
-
-* dynamichazard
-  checking tests ...
-
-* EAinference
-  checking tests ...
-
-* ggloop
-  checking tests ...
-
-* githubinstall
-  checking tests ...
-
-* GSODR
-  checking tests ...
-
-* HIBPwned
-  checking tests ...
-
-* iheatmapr
-  checking tests ...
-
-* kernelboot
-  checking tests ...
-
-* kimisc
-  checking tests ...
-
-* lme4
-  checking tests ...
-
-* msde
-  checking tests ...
-
-* narray
-  checking tests ...
-
-* nat
-  checking tests ...
-
-* nofrills
-  checking tests ...
-
-* optimus
-  checking tests ...
-
-* petro.One
-  checking tests ...
-
-* quanteda
-  checking tests ...
-
-* raptr
+* cde
   checking examples ... ERROR
-  checking tests ...
 
-* remotes
-  checking tests ...
+* cleancall
+  checking tests ... ERROR
 
-* rGoodData
-  checking tests ...
+* geoelectrics
+  checking whether package ‘geoelectrics’ can be installed ... WARNING
+  checking contents of ‘data’ directory ... WARNING
 
-* RNeXML
-  checking tests ...
+* gMOIP
+  checking whether package ‘gMOIP’ can be installed ... WARNING
 
-* rprojroot
-  checking tests ...
+* gWidgets2RGtk2
+  checking tests ... ERROR
 
-* spam
-  checking tests ...
+* HandTill2001
+  checking tests ... ERROR
 
-* swirlify
-  checking tests ...
+* hyperSpec
+  checking examples ... ERROR
 
-* unitizer
-  checking tests ...
+* IncDTW
+  checking tests ... ERROR
 
-* wdman
-  checking tests ...
+* jstor
+  checking tests ... ERROR
 
-* withr
-  checking tests ...
+* markmyassignment
+  checking tests ... ERROR
 
-* Zelig
-  checking tests ...
+* Morpho
+  checking whether package ‘Morpho’ can be installed ... WARNING
 
-* zonator
-  checking tests ...
+* msm
+  checking tests ... ERROR
+
+* ndtv
+  checking running R code from vignettes ... ERROR
+
+* ps
+  checking tests ... ERROR
+
+* RcmdrPlugin.lfstat
+  checking tests ... ERROR
+
+* rotor
+  checking tests ... ERROR
+
+* rvgtest
+  checking tests ... ERROR
+
+* santoku
+  checking tests ... ERROR
+
+* sars
+  checking tests ... ERROR
+
+* vdiffr
+  checking tests ... ERROR
 
 ### Failed to check
 
-* briskaR          (failed to install)
-* curl             (failed to install)
-* dataRetrieval    (check timed out)
-* gWidgets2tcltk   (failed to install)
-* jqr              (failed to install)
-* keyring          (failed to install)
-* kmcudaR          (failed to install)
-* loon             (failed to install)
-* markmyassignment (failed to install)
-* mwaved           (failed to install)
-* openssl          (failed to install)
-* RAppArmor        (failed to install)
-* redux            (failed to install)
-* SnakeCharmR      (failed to install)
-* sys              (failed to install)
-* textTinyR        (failed to install)
-* zstdr            (failed to install)
+* backShift          (NA)
+* bdclean            (NA)
+* bibliometrix       (NA)
+* biolink            (NA)
+* bioOED             (NA)
+* bsts               (NA)
+* butcher            (NA)
+* carbonate          (NA)
+* CausalImpact       (NA)
+* cbar               (NA)
+* chicane            (NA)
+* choroplethr        (NA)
+* decisionSupport    (NA)
+* dimRed             (NA)
+* dispRity           (NA)
+* dmdScheme          (NA)
+* doRNG              (NA)
+* elementR           (NA)
+* EML                (NA)
+* finbif             (NA)
+* GALLO              (NA)
+* geojson            (NA)
+* geonapi            (NA)
+* ghibli             (NA)
+* Greg               (NA)
+* hadron             (NA)
+* hNMF               (NA)
+* HyRiM              (NA)
+* ICAMS              (NA)
+* jqr                (NA)
+* Luminescence       (NA)
+* metagam            (NA)
+* MGMS2              (NA)
+* mlrCPO             (NA)
+* MoMPCA             (NA)
+* o2geosocial        (NA)
+* ows4R              (NA)
+* phylobase          (NA)
+* PortfolioAnalytics (NA)
+* provTraceR         (NA)
+* rags2ridges        (NA)
+* redland            (NA)
+* ReIns              (NA)
+* rmRNAseq           (NA)
+* rstanarm           (NA)
+* salesforcer        (NA)
+* seqgendiff         (NA)
+* smartdata          (NA)
+* SMITIDvisu         (NA)
+* snotelr            (NA)
+* ssh                (NA)
+* tmap               (NA)
+* treespace          (NA)
+* utiml              (NA)
+* wilson             (NA)
+* wrswoR             (NA)

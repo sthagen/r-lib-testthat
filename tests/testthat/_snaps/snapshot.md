@@ -16,6 +16,8 @@
 
 # can snapshot everything
 
+    Code
+      f()
     Output
       [1] "1"
     Message <simpleMessage>
@@ -25,8 +27,35 @@
     Error <rlang_error>
       4
 
+# snapshot handles multi-line input
+
+    Code
+      1 + 2
+    Output
+      [1] 3
+    Code
+      3 + 4
+    Output
+      [1] 7
+    Code
+      # this is a comment
+
+# snapshot captures output if visible
+
+    Code
+      f_visible()
+    Output
+      [1] "x"
+
+---
+
+    Code
+      f_invisible()
+
 # captures custom classes
 
+    Code
+      f()
     Message <testthat_greeting>
       Hello
     Warning <testthat_farewell>
@@ -92,22 +121,4 @@
 
     WAoAAAACAAMGAwACAwAAAAATAAAABAAAABAAAAABAAQACQAAAAFhAAAADgAAAAE/+AAAAAAA
     AAAAAA0AAAABAAAAAQAAAAoAAAABAAAAAQ==
-
-# informs about files being accepted
-
-    Message <message>
-      Updating snapshots
-      * a.new.md
-      * b.new.md
-
----
-
-    Message <message>
-      No snapshots to update
-
-# can accept specific files
-
-    Message <message>
-      Updating snapshots
-      * a.new.md
 

@@ -28,6 +28,7 @@ SummaryReporter <- R6::R6Class("SummaryReporter",
                           max_reports = getOption("testthat.summary.max_reports", 10L),
                           ...) {
       super$initialize(...)
+      self$capabilities$parallel_support <- TRUE
       self$failures <- Stack$new()
       self$skips <- Stack$new()
       self$warnings <- Stack$new()
@@ -151,7 +152,7 @@ skip_summary <- function(x, label) {
 }
 
 failure_summary <- function(x, label, width = cli::console_width()) {
-  header <- paste0(label, ". ", failure_header(x))
+  header <- paste0(label, ". ", issue_header(x))
 
   paste0(
     cli::rule(header, col = testthat_style("error")), "\n",

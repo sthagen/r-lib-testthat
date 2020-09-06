@@ -5,6 +5,9 @@ vignette: >
   %\VignetteIndexEntry{Running tests in parallel}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+editor_options:
+  markdown:
+    wrap: sentence
 ---
 
 ```{r setup, include = FALSE}
@@ -12,114 +15,141 @@ library(testthat)
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-## Parallel testthat (preview)
+To take advantage of parallel tests, add the following line to the `DESCRIPTION`:
 
-### Turning on parallel tests
+    Config/testthat/parallel: true
 
-The current development version of testthat supports running test in
-parallel, in multiple R subprocesses. To turn on this feature, you
-need to set the `TESTTHAT_PARALLEL` environment variable to `true`.
+## Basic operation
 
-### Number of parallel subprocesses
+Starting a new R process is relatively expensive, so testthat begins by creating a pool of workers.
+The size of the pool will be determined by `getOption("Ncpus")`, then the `TESTTHAT_MAX_CPUS` envvar, then the number of processes reported by `ps::ps_cpu_count()`.
+In any case, testthat will never start more subprocesses than test files.
 
-The number of subprocesses is taken from the `Ncpus` option, if set,
-otherwise it is fixed to 4. This will change later, see the TODO list
-at <https://github.com/r-lib/testthat/pull/1032>. (But testthat never
-starts more subprocesses than the number of test files.)
+Each worker begins by loading testthat and the package being tested.
+It then runs any setup files (so if you have existing setup files you'll need to make sure they work when executed in parallel).
 
-### Test files, test order and state
+testthat runs test *files* in parallel.
+Once the worker pool is initialized, testthat then starts sending test files to workers, by default in alphabetical order: as soon as a subprocess has finished, it receives another file, until all files are done.
+This means that state is persisted across test files: options are *not* reset, loaded packages are *not* unloaded, the global environment is *not* cleared, etc.
+You are responsible for making sure each file leaves the world as it finds it.
 
-testthat starts running the test files in alphabetical order. As soon
-as a subprocess has finished with a file, it receives another file to
-run from the main process, until all files are done. In general, the
-user cannot make any assumptions about the order of the files, and
-which subprocess they'll be executed on.
+Because files are run in alphabetical order, you may want to rename your slowest test files so that they start first, e.g. `test-1-slowest.R`, `test-2-next-slowest.R`, etc.
 
-Test files do not start in a clean R process currently. The first *n*
-files, where *n* is the number of subprocesses, do start in a clean R
-process, but users should not rely on that. In particular, options
-(set via `options()` or otherwise) are *not* reset, loaded packages
-are *not* unloaded, the global environment is *not* cleared, etc. In
-the future the user will be able to request a clean R process for a
-test file, see the TODO at
-<https://github.com/r-lib/testthat/pull/1032> .
+## Common problems
 
-Since files run in alphabetical order, ideally the files that take the
-longest to run, should be started first. This way, we can avoid
-starting a long running test file on a subprocess, when the other
-files have finished already and the other subprocesses have nothing to
-do. To achive this, you can name your test files like this:
+-   If tests fail stochastically (i.e. they sometimes work and sometimes fail) you may have accidentally introduced a dependency between your test files.
+    This sort of dependency is hard to track down due to the random nature, and you'll need to check all tests to make sure that they're not accidentally changing global state.
 
-    test-1-slowest.R
-    test-2-next-slowest.R
-    ...
+-   If you use [packaged scope test fixtures](https://testthat.r-lib.org/articles/test-fixtures.html#package), you'll need to review them to make sure that they work in parallel.
+    For example, if you were previously creating a temporary database in the test directory, you'd need to instead create it in the session temporary directory so that each process gets its on independent version.
 
-### Helper, setup, teardown files
+## Performance
 
-All test subprocesses run the helper files (if requested in
-`devtools::test()`, `testthat::test_dir()`, etc.), then they run the
-setup files. After the last test file has finished, all subprocesses
-run the teardown files.
+There is some overhead associated with running tests in parallel:
 
-### Known issues
+-   Startup cost is linear in the number of subprocesses, because we need to create them in a loop.
+    This is about 50ms on my laptop.
+    Each subprocess needs to load testthat and the tested package, this happens in parallel, and we cannot do too much about it.
 
--   The `location` reporter does not work currently. Any reporter that
-    relies on stack traces being present in all test results, will
-    fail.
--   The current reporters are not ideal for parallel execution, as
-    they cannot handle running multiple files at the same time.
-    Parallel testthat tricks the reporters by collecting all results
-    for a test file, and then "replaying" them at once. Reporters can
-    not show the progress within files. This will be fixed later.
--   testthat does not handle crashes currently. This will be fixed
-    later.
--   You cannot currently use the `env` argument of `test_dir()`, etc.
-    Do not set this argument if you use parallel testthat. This will
-    be fixed later.
--   Test files that perform many quick expectations might be slow.
-    This will be fixed later.
--   testthat does not currently auto-detect the number of processors.
-    This will be fixed later.
--   Parallel testhat currently silently ignores failures in the
-    helper, startup and teardown files. This will be fixed later.
--   The process tree cleanup only works on macOS, Windows and Linux
-    currently, so parallel testthat only supports these operating
-    systems. This will be fixed later.
--   testthat cannot yet run its own tests in parallel.
--   covr might not work for parallel tests, at least it fails for
-    testthat itself.
+-   Clean up time is again linear in the number of subprocesses, and it about 80ms per subprocess on my laptop.
 
-### Benchmarks
+-   It seems that sending a message (i.e. a passing or failing expectation) is about 2ms currently.
+    This is the total cost that includes sending the message, receiving it, and replying it to a non-parallel reporter.
 
-These are very preliminary, to have a feeling where the bottlenecks
-might be.
+This overhead generally means that if you have many test files that take a short amount of time, you're unlikely to see a huge benefit by using parallel tests.
+For example, testthat itself takes about 10s to run tests in serial, and 8s to run the tests in parallel.
+That's because most tests take less than a second to run, and the slowest test (which takes 3s) is started last.
 
-#### Startup time
+## Reporters
 
-Startup cost is linear in the number of subprocesses, because we need
-to create them in a loop. This is about 50ms on my laptop. Each
-subprocess needs to load testthat and the tested package, this happens
-in parallel, and we cannot do too much about it.
+### Default reporters
 
-#### Cleanup time
+See `default_reporter()` for how testthat selects the default reporter for `devtools::test()` and `testthat::test_local()`.
+In short, testthat selects `ProgressReporter` for non-parallel and `ParallelProgressReporter` for parallel tests by default.
+(Other testthat test functions, like `test_check()`, `test_file()` , etc. select different reporters by default.)
 
-This is again linear in the number of subprocesses, and it about 80ms
-per subprocess on my laptop. The teardown files run in parallel, of
-course.
+### Parallel support
 
-#### Messaging costs
+Most reporters support parallel tests.
+If a reporter is passed to `devtools::test()`, `testthat::test_dir()`, etc. directly, and it does not support parallel tests, then testthat runs the test files sequentially.
 
-To get a sense of messaging costs, I run 1-8 extremely simple test
-files:
+Currently the following reporters *don't* support parallel tests:
 
-    test_that("foobar", {
-      for (i in 1:100) expect_true(TRUE)
-    })
+-   `DebugReporter`, because it is not currently possible to debug subprocesses.
 
-with changing the number of expectations and number of subprocesses.
-It seems that sending a message is about 2ms currently. This is the
-total cost that includes sending the message, receiving it, and
-replying it to a non-parallel reporter. We will improve this by
-avoiding frequent messages in a single subprocess and sending them in
-batches. This will make sure that test suites that have hundreds or
-thousands of expectations will not lose much.
+-   `JunitReporter`, because this reporter records timing information for each test block, and this is currently only available for reporters that support multiple active test files.
+    (See "Writing parallel reporters" below.)
+
+-   `LocationReporter` because testthat currently does not include location information for successful tests when running in parallel, to minimize messaging between the processes.
+
+-   `StopReporter`, as this is a reporter that testthat uses for interactive `expect_that()` calls.
+
+The other built-in reporters all support parallel tests, with some subtle differences:
+
+-   Reporters that stop after a certain number of failures can only stop at the end of a test file.
+
+-   Reporters report all information about a file at once, unless they support *parallel updates*.
+    E.g.
+    `ProgressReporter` does not update its display until a test file is complete.
+
+-   The standard output and standard error, i.e. `print()`, `cat()`, `message()`, etc. output from the test files are lost currently.
+    If you want to use `cat()` or `message()` for print-debugging test cases, then the best is to temporarily run tests sequentially, by changing the `Config` entry in `DESCRIPTION` or selecting a non-parallel reporter, e.g. the `CheckReporter`:
+
+    ``` {.r}
+    devtools::test(filter = "badtest", reporter = "check")
+    ```
+
+### Writing parallel reporters
+
+To support parallel tests, a reporter must be able to function when the test files run in a subprocess.
+For example `DebugReporter` does not support parallel tests, because it requires direct interaction with the frames in the subprocess.
+When running in parallel, testthat does not provide location information (source references) for test successes.
+
+To support parallel tests, a reporter must set `self$capabilities$parallel_support` to `TRUE` in its `initialize()` method:
+
+``` {.r}
+...
+initialize = function(...) {
+  super$initialize(...)
+  self$capabilities$parallel_support <- TRUE
+  ...
+}
+...
+```
+
+When running in parallel, testthat runs the reporter in the main process, and relays information between the reporter and the test code transparently.
+(Currently the reporter does not even know that the tests are running in parallel.)
+
+If a reporter does not support parallel updates (see below), then testthat internally caches all calls to the reporter methods from subprocesses, until a test file is complete.
+This is because these reporters are not prepared for running multiple test files concurrently.
+Once a test file is complete, testthat calls the reporter's `$start_file()` method, relays all `$start_test()` , `$end_test()`, `$add_result()`, etc. calls in the order they came in from the subprocess, and calls `$end_file()` .
+
+### Parallel updates
+
+The `ParallelProgressReporter` supports parallel updates.
+This means that once a message from a subprocess comes in, the reporter is updated immediately.
+For this to work, a reporter must be able to handle multiple test files concurrently.
+
+A reporter declares parallel update support by setting `self$capabilities$parallel_updates` to `TRUE`:
+
+``` {.r}
+...
+initialize = function(...) {
+  super$initialize(...)
+  self$capabilities$parallel_support <- TRUE
+  self$capabilities$parallel_updates <- TRUE
+  ...
+}
+...
+```
+
+For these reporters, testthat does not cache the messages from the subprocesses.
+Instead, when a message comes in:
+
+-   It calls the `$start_file()` method, letting the reporter know which file the following calls apply to.
+    This means that the reporter can receive multiple `$start_file()` calls for the same file.
+
+-   Then relays the message from the subprocess, calling the appropriate `$start_test()` , `$add_result()`, etc. method.
+
+testthat also calls the new `$update()` method of the reporter regularly, even if it does not receive any messages from the subprocess.
+(Currently aims to do this every 100ms, but there are no guarantees.) The `$update()` method may implement a spinner to let the user know that the tests are running.

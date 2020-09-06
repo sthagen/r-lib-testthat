@@ -2,7 +2,7 @@
 % Please edit documentation in R/expect-equality.R
 \name{expect_reference}
 \alias{expect_reference}
-\title{Do two names point to the same underlying object?}
+\title{Does code return a reference to the expected object?}
 \usage{
 expect_reference(
   object,
@@ -39,6 +39,15 @@ use only.}
 \code{expect_reference()} compares the underlying memory addresses of
 two symbols. It is for expert use only.
 }
+\section{3rd edition}{
+
+\ifelse{html}{\figure{lifecycle-deprecated.svg}{options: alt='Deprecated lifecycle'}}{\strong{Deprecated}}
+
+\code{expect_reference()} is deprecated in the third edition. If you know what
+you're doing, and you really need this behaviour, just use \code{is_reference()}
+directly: \code{expect_true(rlang::is_reference(x, y))}.
+}
+
 \seealso{
 Other expectations: 
 \code{\link{comparison-expectations}},
@@ -54,3 +63,4 @@ Other expectations:
 \code{\link{logical-expectations}}
 }
 \concept{expectations}
+\keyword{internal}

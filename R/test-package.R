@@ -27,7 +27,8 @@
 test_package <- function(package, reporter = check_reporter(), ...) {
   test_path <- system.file("tests", "testthat", package = package)
   if (test_path == "") {
-    stop("No tests found for ", package, call. = FALSE)
+    inform(paste0("No installed testthat tests found for ", package))
+    return(invisible())
   }
 
   test_dir(
@@ -54,7 +55,7 @@ test_check <- function(package, reporter = check_reporter(), ...) {
 
 #' @export
 #' @rdname test_package
-test_local <- function(path = ".", reporter = default_reporter(), ...) {
+test_local <- function(path = ".", reporter = NULL, ...) {
   package <- pkgload::pkg_name(path)
   test_path <- file.path(pkgload::pkg_path(path), "tests", "testthat")
 
