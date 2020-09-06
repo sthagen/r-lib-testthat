@@ -184,13 +184,13 @@
   <span class="fu"><a href="../reference/expect_snapshot.html">expect_snapshot_output</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu">bullets</span>(<span class="st">"a"</span>)))
   <span class="fu"><a href="../reference/expect_snapshot.html">expect_snapshot_output</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu">bullets</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)))
 })
-<span class="co">#&gt; ── &lt;text&gt;:2:3: warning: bullets ────────────────────────────────────────────────</span>
+<span class="co">#&gt; ── Warning (&lt;text&gt;:2:3): bullets ───────────────────────────────────────────────</span>
 <span class="co">#&gt; Adding new snapshot:</span>
 <span class="co">#&gt; &lt;ul&gt;</span>
 <span class="co">#&gt;   &lt;li&gt;a&lt;/li&gt;</span>
 <span class="co">#&gt; &lt;/ul&gt;</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ── &lt;text&gt;:3:3: warning: bullets ────────────────────────────────────────────────</span>
+<span class="co">#&gt; ── Warning (&lt;text&gt;:3:3): bullets ───────────────────────────────────────────────</span>
 <span class="co">#&gt; Adding new snapshot:</span>
 <span class="co">#&gt; &lt;ul id="b"&gt;</span>
 <span class="co">#&gt;   &lt;li&gt;a&lt;/li&gt;</span>
@@ -214,15 +214,15 @@
   <span class="fu"><a href="../reference/expect_snapshot.html">expect_snapshot_output</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu">bullets</span>(<span class="st">"a"</span>)))
   <span class="fu"><a href="../reference/expect_snapshot.html">expect_snapshot_output</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="fu">bullets</span>(<span class="st">"a"</span>, <span class="st">"b"</span>)))
 })
-<span class="co">#&gt; ── &lt;text&gt;:9:3: failure: bullets ────────────────────────────────────────────────</span>
-<span class="co">#&gt; Shapshot of `cat(bullets("a"))` has changed:</span>
+<span class="co">#&gt; ── FAILURE (&lt;text&gt;:9:3): bullets ───────────────────────────────────────────────</span>
+<span class="co">#&gt; Snapshot of `cat(bullets("a"))` has changed:</span>
 <span class="co">#&gt; `current`:  "&lt;ul&gt;" "&lt;li&gt;a&lt;/li&gt;"   "&lt;/ul&gt;"</span>
 <span class="co">#&gt; `previous`: "&lt;ul&gt;" "  &lt;li&gt;a&lt;/li&gt;" "&lt;/ul&gt;"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Run `snapshot_accept('pizza')` if this is a deliberate change</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ── &lt;text&gt;:10:3: failure: bullets ───────────────────────────────────────────────</span>
-<span class="co">#&gt; Shapshot of `cat(bullets("a", "b"))` has changed:</span>
+<span class="co">#&gt; ── FAILURE (&lt;text&gt;:10:3): bullets ──────────────────────────────────────────────</span>
+<span class="co">#&gt; Snapshot of `cat(bullets("a", "b"))` has changed:</span>
 <span class="co">#&gt; `current`:  "&lt;ul id=\"b\"&gt;" "&lt;li&gt;a&lt;/li&gt;"   "&lt;/ul&gt;"</span>
 <span class="co">#&gt; `previous`: "&lt;ul id=\"b\"&gt;" "  &lt;li&gt;a&lt;/li&gt;" "&lt;/ul&gt;"</span>
 <span class="co">#&gt; </span>
@@ -260,6 +260,15 @@
 <li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot_error()</a></code> works like <code><a href="../reference/expect_snapshot.html">expect_snapshot_output()</a></code> but captures an error message, rather than console output.</p></li>
 <li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot_value()</a></code> checks that the value of any R object stays the same. It has a number of serialisation approaches built-in that offer a tradeoff between accuracy and human readability.</p></li>
 </ul>
+</div>
+<div id="whole-file-snapshotting" class="section level2">
+<h2 class="hasAnchor">
+<a href="#whole-file-snapshotting" class="anchor"></a>Whole file snapshotting</h2>
+<p><code><a href="../reference/expect_snapshot.html">expect_snapshot()</a></code>, <code><a href="../reference/expect_snapshot.html">expect_snapshot_output()</a></code>, <code><a href="../reference/expect_snapshot.html">expect_snapshot_error()</a></code>, and <code><a href="../reference/expect_snapshot.html">expect_snapshot_value()</a></code> all store their snapshots in a single file per test. But that doesn’t work for all file types — for example, what happens if you want to snapshot an image? <code><a href="../reference/expect_snapshot_file.html">expect_snapshot_file()</a></code> provides an alternative workflow that generates one snapshot per expectation, rather than one file per test. Assuming you’re in <code>test-burger.R</code> then the snapshot created by <code><a href="../reference/expect_snapshot_file.html">expect_snapshot_file(code_that_returns_path_to_file(), "toppings.png")</a></code> would be saved in <code>tests/testthat/_snaps/burger/toppings.png</code>. If a future change in the code creates a a different file it will be saved in <code>tests/testthat/_snaps/burger/toppings.new.png</code>.</p>
+<p>Unlike <code><a href="../reference/expect_snapshot.html">expect_snapshot()</a></code> and friends, <code><a href="../reference/expect_snapshot.html">expect_snapshot()</a></code> can’t automatically provide an automatic diff when the test fails. Instead you’ll need to call <code><a href="../reference/snapshot_accept.html">snapshot_review()</a></code>. This launches a Shiny app that allows you to visually review each change and approve it if it’s deliberate:</p>
+<p><img src="review-image.png"><img src="review-text.png"></p>
+<p>The display varies based on the file type (currently text files, common image files, and csv files are supported).</p>
+<p>In most cases, we don’t expect you to use <code><a href="../reference/expect_snapshot_file.html">expect_snapshot_file()</a></code> directly. Instead, you’ll use it via a wrapper that does its best to gracefully skip tests when differences in platform or package versions make it unlikely to generate perfectly reproducible output.</p>
 </div>
 <div id="previous-work" class="section level2">
 <h2 class="hasAnchor">

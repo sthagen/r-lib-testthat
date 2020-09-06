@@ -165,13 +165,13 @@
   <span class="fu"><a href="../reference/local_edition.html">local_edition</a></span>(<span class="fl">3</span>)
   <span class="fu"><a href="../reference/logical-expectations.html">expect_true</a></span>(<span class="fl">TRUE</span>)
 })
-<span class="co">#&gt; Test passed 🥇</span></pre></body></html></div>
+<span class="co">#&gt; Test passed 😀</span></pre></body></html></div>
 <p>This is also useful if you’ve switched to the 3rd edition and have a couple of tests that fail. You can use <code><a href="../reference/local_edition.html">local_edition(2)</a></code> to revert back to the old behaviour, giving you some breathing room to figure out the underlying issue.</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/test_that.html">test_that</a></span>(<span class="st">"I want to use the 2nd edition"</span>, {
   <span class="fu"><a href="../reference/local_edition.html">local_edition</a></span>(<span class="fl">2</span>)
   <span class="fu"><a href="../reference/logical-expectations.html">expect_true</a></span>(<span class="fl">TRUE</span>)
 })
-<span class="co">#&gt; Test passed 🥇</span></pre></body></html></div>
+<span class="co">#&gt; Test passed 😸</span></pre></body></html></div>
 </div>
 <div id="changes" class="section level2">
 <h2 class="hasAnchor">
@@ -249,6 +249,23 @@
 </li>
 </ul>
 </div>
+<div id="reproducible-output" class="section level3">
+<h3 class="hasAnchor">
+<a href="#reproducible-output" class="anchor"></a>Reproducible output</h3>
+<p>In the third edition, <code><a href="../reference/test_that.html">test_that()</a></code> automatically calls <code><a href="../reference/local_test_context.html">local_reproducible_output()</a></code> which automatically sets a number of options and environment variables to ensure output is as reproducible across systems. This includes setting:</p>
+<ul>
+<li><p><code><a href="https://rdrr.io/r/base/options.html">options(crayon.enabled = FALSE)</a></code> and <code><a href="https://rdrr.io/r/base/options.html">options(cli.unicode = FALSE)</a></code> so that the crayon and cli packages produce raw ASCII output.</p></li>
+<li><p><code>Sys.setLocale("LC_COLLATE" = "C")</code> so that sorting a character vector returns the same order regardless of the system language.</p></li>
+<li><p><code><a href="https://rdrr.io/r/base/options.html">options(width = 80)</a></code> so print methods always generate the same output regardless of your actual console width.</p></li>
+</ul>
+<p>See the documentation for more details.</p>
+</div>
+</div>
+<div id="alternatives" class="section level2">
+<h2 class="hasAnchor">
+<a href="#alternatives" class="anchor"></a>Alternatives</h2>
+<p>You might wonder why we came up with the idea of an “edition”, rather than creating a new package like testthat3. We decided against making a new package because the 2nd and 3rd edition share a very large amount of code, so making a new package would have substantially increased the maintenance burden: the majority of bugs would’ve needed to be fixed in two places.</p>
+<p>If you’re a programmer in other languages, you might wonder why we can’t rely on <a href="https://semver.org">semantic versioning</a>. The main reason is that CRAN checks all packages that use testthat with the latest version of testthat, so simply incrementing the major version number doesn’t actually help with reducing R CMD check failures on CRAN.</p>
 </div>
   </div>
 
