@@ -474,7 +474,7 @@
 <h2 class="hasAnchor">
 <a href="#breaking-api-changes" class="anchor"></a>Breaking API changes</h2>
 <ul>
-<li><p>“Can’t mock functions in base packages”: You can no longer use <code><a href="../reference/with_mock.html">with_mock()</a></code> to mock functions in base packages, because this no longer works in R-devel due to changes with the byte code compiler. I recommend using <a href="https://github.com/n-s-f/mockery">mockery</a> or <a href="https://github.com/krlmlr/mockr">mockr</a> instead.</p></li>
+<li><p>“Can’t mock functions in base packages”: You can no longer use <code><a href="../reference/with_mock.html">with_mock()</a></code> to mock functions in base packages, because this no longer works in R-devel due to changes with the byte code compiler. I recommend using <a href="https://github.com/r-lib/mockery">mockery</a> or <a href="https://github.com/krlmlr/mockr">mockr</a> instead.</p></li>
 <li>
 <p>The order of arguments to <code><a href="../reference/expect_equivalent.html">expect_equivalent()</a></code> and <code><a href="../reference/expect_error.html">expect_error()</a></code> has changed slightly as both now pass <code>...</code> on another function. This reveals itself with a number of different errors, like:</p>
 <ul>
@@ -529,15 +529,17 @@
 <a href="#quasiquotation-support" class="anchor"></a>Quasiquotation support</h3>
 <p>All expectations can now use unquoting (<a href='https://github.com/r-lib/testthat/issues/626'>#626</a>). This makes it much easier to generate informative failure messages when running tests in a for loop.</p>
 <p>For example take this test:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="no">f</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">i</span>) <span class="kw">if</span> (<span class="no">i</span> <span class="kw">&gt;</span> <span class="fl">3</span>) <span class="no">i</span> * <span class="fl">9</span> <span class="kw">else</span> <span class="no">i</span> * <span class="fl">10</span>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="va">i</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">)</span> <span class="va">i</span> <span class="op">*</span> <span class="fl">9</span> <span class="kw">else</span> <span class="va">i</span> <span class="op">*</span> <span class="fl">10</span>
 
-<span class="kw">for</span> (<span class="no">i</span> <span class="kw">in</span> <span class="fl">1</span>:<span class="fl">5</span>) {
-  <span class="fu"><a href="../reference/equality-expectations.html">expect_equal</a></span>(<span class="fu">f</span>(<span class="no">i</span>), <span class="no">i</span> * <span class="fl">10</span>)
-}</pre></div>
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="va">i</span><span class="op">)</span>, <span class="va">i</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span>
+<span class="op">}</span></pre></div>
 <p>When it fails, you’ll see the message <code>Error: `f(i)` not equal to `i * 10`</code>. That’s hard to diagnose because you don’t know which iteration caused the problem!</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="kw">for</span> (<span class="no">i</span> <span class="kw">in</span> <span class="fl">1</span>:<span class="fl">5</span>) {
-  <span class="fu"><a href="../reference/equality-expectations.html">expect_equal</a></span>(<span class="fu">f</span>(!!<span class="no">i</span>), !!(<span class="no">i</span> * <span class="fl">10</span>))
-}</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">i</span><span class="op">)</span>, <span class="op">!</span><span class="op">!</span><span class="op">(</span><span class="va">i</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></pre></div>
 <p>If you unquote the values using <code>!!</code>, you get the failure message <code>`f(4L)` not equal to 40.</code>. This is much easier to diagnose! See <code>?quasi_label()</code> for more details.</p>
 <p>(Note that this is not tidy evaluation per se, but is closely related. At this time you can not unquote quosures.)</p>
 </div>
@@ -560,9 +562,10 @@
 <li><p>All files are now read and written as UTF-8 (<a href='https://github.com/r-lib/testthat/issues/510'>#510</a>, <a href='https://github.com/r-lib/testthat/issues/605'>#605</a>).</p></li>
 <li>
 <p><code><a href="../reference/is_testing.html">is_testing()</a></code> allows you to tell if your code is being run inside a testing environment (<a href='https://github.com/r-lib/testthat/issues/631'>#631</a>). Rather than taking a run-time dependency on testthat you may want to inline the function into your own package:</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="no">is_testing</span> <span class="kw">&lt;-</span> <span class="kw">function</span>() {
-  <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span>(<span class="st">"TESTTHAT"</span>), <span class="st">"true"</span>)
-}</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="va">is_testing</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"TESTTHAT"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span>
+<span class="op">}</span></pre></div>
 <p>It’s frequently useful to combine with <code><a href="https://rdrr.io/r/base/interactive.html">interactive()</a></code>.</p>
 </li>
 </ul>
@@ -677,10 +680,11 @@
 <a href="#new-expectations-1" class="anchor"></a>New expectations</h2>
 <p>The expectation system got a thorough overhaul (<a href='https://github.com/r-lib/testthat/issues/217'>#217</a>). This primarily makes it easier to add new expectations in the future, but also included a thorough review of the documentation, ensuring that related expectations are documented together, and have evocative names.</p>
 <p>One useful change is that most expectations invisibly return the input <code>object</code>. This makes it possible to chain together expectations with magrittr:</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="st">"a"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/inheritance-expectations.html">expect_type</a></span>(<span class="st">"integer"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/inheritance-expectations.html">expect_s3_class</a></span>(<span class="st">"factor"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/expect_length.html">expect_length</a></span>(<span class="fl">1</span>)</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="st">"integer"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/inheritance-expectations.html">expect_s3_class</a></span><span class="op">(</span><span class="st">"factor"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/expect_length.html">expect_length</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></pre></div>
 <p>(And to make this style even easier, testthat now re-exports the pipe, <a href='https://github.com/r-lib/testthat/issues/412'>#412</a>).</p>
 <p>The exception to this rule are the expectations that evaluate (i.e. for messages, warnings, errors, output etc), which invisibly return <code>NULL</code>. These functions are now more consistent: using <code>NA</code> will cause a failure if there is a errors/warnings/mesages/output (i.e. they’re not missing), and will <code>NULL</code> fail if there aren’t any errors/warnings/mesages/output. This previously didn’t work for <code><a href="../reference/expect_output.html">expect_output()</a></code> (<a href='https://github.com/r-lib/testthat/issues/323'>#323</a>), and the error messages were confusing with <code><a href="../reference/expect_error.html">expect_error(..., NA)</a></code> (<a href='https://github.com/r-lib/testthat/issues/342'>#342</a>, <a href='https://github.com/nealrichardson'>@nealrichardson</a> + <a href='https://github.com/krlmlr'>@krlmlr</a>, <a href='https://github.com/r-lib/testthat/issues/317'>#317</a>).</p>
 <p>Another change is that <code><a href="../reference/expect_output.html">expect_output()</a></code> now requires you to explicitly print the output if you want to test a print method: <code><a href="../reference/expect_output.html">expect_output("a", "a")</a></code> will fail, <code><a href="../reference/expect_output.html">expect_output(print("a"), "a")</a></code> will succeed.</p>
@@ -748,7 +752,7 @@
 <li><p>Comparing integers to non-numbers doesn’t raise errors anymore, and falls back to string comparison if objects have different lengths. Complex numbers are compared using the same routine (<a href='https://github.com/r-lib/testthat/issues/309'>#309</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
 <li><p><code><a href="../reference/compare.html">compare.numeric()</a></code> and <code><a href="../reference/compare.html">compare.character()</a></code> received another overhaul. This should improve behaviour of edge cases, and provides a strong foundation for further work. Added <code><a href="../reference/compare.html">compare.POSIXt()</a></code> for better reporting of datetime differences.</p></li>
 <li><p><code><a href="../reference/equality-expectations.html">expect_identical()</a></code> and <code><a href="../reference/oldskool.html">is_identical_to()</a></code> now use <code><a href="../reference/compare.html">compare()</a></code> for more detailed output of differences (<a href='https://github.com/r-lib/testthat/issues/319'>#319</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
-<li><p>Added <a href="https://github.com/philsquared/Catch">Catch</a> v1.2.1 for unit testing of C++ code. See <code>?use_catch()</code> for more details. (<a href='https://github.com/kevinushey'>@kevinushey</a>)</p></li>
+<li><p>Added <a href="https://github.com/catchorg/Catch2">Catch</a> v1.2.1 for unit testing of C++ code. See <code>?use_catch()</code> for more details. (<a href='https://github.com/kevinushey'>@kevinushey</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -997,7 +1001,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
