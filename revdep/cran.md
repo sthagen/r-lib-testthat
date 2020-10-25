@@ -1,134 +1,130 @@
 ## revdepcheck results
 
-We checked 2499 reverse dependencies (2484 from CRAN + 15 from BioConductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 5091 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 21 new problems
- * We failed to check 56 packages
+ * We saw 17 new problems
+ * We failed to check 63 packages
 
 Issues with CRAN packages are summarised below.
 
 ### New problems
 (This reports the first line of each new failure)
 
-* bayesCT
+* auk
   checking tests ... ERROR
 
-* cde
-  checking examples ... ERROR
-
-* cleancall
+* bigstatsr
   checking tests ... ERROR
 
-* geoelectrics
-  checking whether package ‘geoelectrics’ can be installed ... WARNING
-  checking contents of ‘data’ directory ... WARNING
-
-* gMOIP
-  checking whether package ‘gMOIP’ can be installed ... WARNING
-
-* gWidgets2RGtk2
+* coil
   checking tests ... ERROR
 
-* HandTill2001
+* DiceKriging
+  checking tests ... ERROR
+
+* ergm.ego
   checking tests ... ERROR
 
 * hyperSpec
   checking examples ... ERROR
 
-* IncDTW
+* mlrCPO
   checking tests ... ERROR
 
-* jstor
+* mvrsquared
   checking tests ... ERROR
 
-* markmyassignment
+* pak
   checking tests ... ERROR
 
-* Morpho
-  checking whether package ‘Morpho’ can be installed ... WARNING
-
-* msm
+* pyMTurkR
   checking tests ... ERROR
 
-* ndtv
-  checking running R code from vignettes ... ERROR
-
-* ps
-  checking tests ... ERROR
-
-* RcmdrPlugin.lfstat
-  checking tests ... ERROR
-
-* rotor
-  checking tests ... ERROR
+* renv
+  checking package dependencies ... ERROR
 
 * rvgtest
   checking tests ... ERROR
 
-* santoku
+* shinyEventLogger
   checking tests ... ERROR
 
-* sars
+* storr
+  checking examples ... ERROR
   checking tests ... ERROR
 
-* vdiffr
+* thor
+  checking tests ... ERROR
+
+* treeclim
+  checking installed package size ... NOTE
+  checking Rd cross-references ... NOTE
+
+* unitizer
   checking tests ... ERROR
 
 ### Failed to check
 
-* backShift          (NA)
-* bdclean            (NA)
-* bibliometrix       (NA)
-* biolink            (NA)
-* bioOED             (NA)
-* bsts               (NA)
-* butcher            (NA)
-* carbonate          (NA)
-* CausalImpact       (NA)
-* cbar               (NA)
-* chicane            (NA)
-* choroplethr        (NA)
-* decisionSupport    (NA)
-* dimRed             (NA)
-* dispRity           (NA)
-* dmdScheme          (NA)
-* doRNG              (NA)
-* elementR           (NA)
-* EML                (NA)
-* finbif             (NA)
-* GALLO              (NA)
-* geojson            (NA)
-* geonapi            (NA)
-* ghibli             (NA)
-* Greg               (NA)
-* hadron             (NA)
-* hNMF               (NA)
-* HyRiM              (NA)
-* ICAMS              (NA)
-* jqr                (NA)
-* Luminescence       (NA)
-* metagam            (NA)
-* MGMS2              (NA)
-* mlrCPO             (NA)
-* MoMPCA             (NA)
-* o2geosocial        (NA)
-* ows4R              (NA)
-* phylobase          (NA)
-* PortfolioAnalytics (NA)
-* provTraceR         (NA)
-* rags2ridges        (NA)
-* redland            (NA)
-* ReIns              (NA)
-* rmRNAseq           (NA)
-* rstanarm           (NA)
-* salesforcer        (NA)
-* seqgendiff         (NA)
-* smartdata          (NA)
-* SMITIDvisu         (NA)
-* snotelr            (NA)
-* ssh                (NA)
-* tmap               (NA)
-* treespace          (NA)
-* utiml              (NA)
-* wilson             (NA)
-* wrswoR             (NA)
+* ActivePathways        (NA)
+* anglr                 (NA)
+* av                    (NA)
+* backShift             (NA)
+* batchtools            (NA)
+* bdchecks              (NA)
+* bdclean               (NA)
+* blavaan               (NA)
+* Boom                  (NA)
+* butcher               (NA)
+* CB2                   (NA)
+* ceramic               (NA)
+* CompareCausalNetworks (NA)
+* crossmap              (NA)
+* dataone               (NA)
+* datapack              (NA)
+* decisionSupport       (NA)
+* diceR                 (NA)
+* dimRed                (NA)
+* dmdScheme             (NA)
+* doRNG                 (NA)
+* EML                   (NA)
+* finbif                (NA)
+* finch                 (NA)
+* fingertipscharts      (NA)
+* foieGras              (NA)
+* geojson               (NA)
+* geojsonio             (NA)
+* ghibli                (NA)
+* gWidgets2tcltk        (NA)
+* hNMF                  (NA)
+* jqr                   (NA)
+* jstor                 (NA)
+* kmcudaR               (NA)
+* lazyraster            (NA)
+* loon                  (NA)
+* metagam               (NA)
+* mlr3db                (NA)
+* mlr3pipelines         (NA)
+* osmplotr              (NA)
+* penaltyLearning       (NA)
+* phylopath             (NA)
+* PortfolioAnalytics    (NA)
+* quadmesh              (NA)
+* ragg                  (NA)
+* rbgm                  (NA)
+* rdflib                (NA)
+* redland               (NA)
+* ReIns                 (NA)
+* reproj                (NA)
+* rrd                   (NA)
+* sen2r                 (NA)
+* seqgendiff            (NA)
+* silicate              (NA)
+* smartdata             (NA)
+* SMITIDvisu            (NA)
+* spbabel               (NA)
+* spectralAnalysis      (NA)
+* spex                  (NA)
+* ssh                   (NA)
+* stablespec            (NA)
+* trip                  (NA)
+* wrswoR                (NA)

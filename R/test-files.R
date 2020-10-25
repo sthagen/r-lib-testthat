@@ -12,7 +12,7 @@
 #'
 #' * Setup files start with `setup` and are executed before tests. If
 #'   clean up is needed after all tests have been run, you can use
-#'   `withr::defer(clean_up(), teardown_env())`. See `vignette("text-fixtures)`
+#'   `withr::defer(clean_up(), teardown_env())`. See `vignette("text-fixtures")`
 #'   for more details.
 #'
 #' There are two other types of special file that we no longer recommend using:
@@ -70,16 +70,24 @@ test_dir <- function(path,
 
   load_package <- arg_match(load_package)
 
-  test_paths <- find_test_scripts(path, filter = filter, ..., full.names = FALSE)
+  start_first <- find_test_start_first(path, load_package, package)
+  test_paths <- find_test_scripts(
+    path,
+    filter = filter,
+    ...,
+    full.names = FALSE,
+    start_first = start_first
+  )
   if (length(test_paths) == 0) {
     abort("No test files found")
   }
 
-  if (!missing(wrap)) {
+  if (!is_missing(wrap)) {
     lifecycle::deprecate_warn("3.0.0", "test_dir(wrap = )")
   }
 
-  want_parallel <- find_parallel(path, package) && !is_parallel()
+  want_parallel <- find_parallel(path, load_package, package)
+
   if (is.null(reporter)) {
     if (want_parallel) {
       reporter <- default_parallel_reporter()
@@ -99,6 +107,7 @@ test_dir <- function(path,
     env = env,
     stop_on_failure = stop_on_failure,
     stop_on_warning = stop_on_warning,
+    wrap = wrap,
     load_package = load_package,
     parallel = parallel
   )
@@ -142,8 +151,16 @@ test_files <- function(test_dir,
                        env = NULL,
                        stop_on_failure = FALSE,
                        stop_on_warning = FALSE,
+                       wrap = TRUE,
                        load_package = c("none", "installed", "source"),
                        parallel = FALSE) {
+
+  if (is_missing(wrap)) {
+    wrap <- TRUE
+  }
+  if (!isTRUE(wrap)) {
+    lifecycle::deprecate_warn("3.0.0", "test_dir(wrap = )")
+  }
 
   if (parallel) {
     test_files <- test_files_parallel
@@ -160,6 +177,7 @@ test_files <- function(test_dir,
     env = env,
     stop_on_failure = stop_on_failure,
     stop_on_warning = stop_on_warning,
+    wrap = wrap,
     load_package = load_package
   )
 }
@@ -172,13 +190,16 @@ test_files_serial <- function(test_dir,
                        env = NULL,
                        stop_on_failure = FALSE,
                        stop_on_warning = FALSE,
+                       wrap = TRUE,
                        load_package = c("none", "installed", "source")) {
 
   env <- test_files_setup_env(test_package, test_dir, load_package, env)
   test_files_setup_state(test_dir, test_package, load_helpers, env)
   reporters <- test_files_reporter(reporter)
 
-  with_reporter(reporters$multi, lapply(test_paths, test_one_file, env = env))
+  with_reporter(reporters$multi,
+    lapply(test_paths, test_one_file, env = env, wrap = wrap)
+  )
 
   test_files_check(reporters$list$get_results(),
     stop_on_failure = stop_on_failure,
@@ -242,12 +263,12 @@ test_files_check <- function(results, stop_on_failure = TRUE, stop_on_warning = 
   invisible(results)
 }
 
-test_one_file <- function(path, env = test_env()) {
+test_one_file <- function(path, env = test_env(), wrap = TRUE) {
   reporter <- get_reporter()
   on.exit(teardown_run(), add = TRUE)
 
   reporter$start_file(path)
-  source_file(path, child_env(env))
+  source_file(path, child_env(env), wrap = wrap)
   reporter$end_context_if_started()
   reporter$end_file()
 }
@@ -279,13 +300,21 @@ local_teardown_env <- function(env = parent.frame()) {
 #' @param path path to tests
 #' @param invert If `TRUE` return files which **don't** match.
 #' @param ... Additional arguments passed to [grepl()] to control filtering.
+#' @param start_first A character vector of file patterns (globs, see
+#'   [utils::glob2rx()]). The patterns are for the file names (base names),
+#'   not for the whole paths. testthat starts the files matching the
+#'   first pattern first,  then the ones matching the second, etc. and then
+#'   the rest of the files, alphabetically. Parallel tests tend to finish
+#'   quicker if you start the slowest files first. `NULL` means alphabetical
+#'   order.
 #' @inheritParams test_dir
 #' @return A character vector of paths
 #' @keywords internal
 #' @export
-find_test_scripts <- function(path, filter = NULL, invert = FALSE, ..., full.names = TRUE) {
+find_test_scripts <- function(path, filter = NULL, invert = FALSE, ..., full.names = TRUE, start_first = NULL) {
   files <- dir(path, "^test.*\\.[rR]$", full.names = full.names)
-  filter_test_scripts(files, filter, invert, ...)
+  files <- filter_test_scripts(files, filter, invert, ...)
+  order_test_scripts(files, start_first)
 }
 
 filter_test_scripts <- function(files, filter = NULL, invert = FALSE, ...) {
@@ -298,4 +327,32 @@ filter_test_scripts <- function(files, filter = NULL, invert = FALSE, ...) {
     which_files <- !which_files
   }
   files[which_files]
+}
+
+find_test_start_first <- function(path, load_package, package) {
+  # Make sure we get the local package package if not "installed"
+  if (load_package != "installed") package <- NULL
+  desc <- find_description(path, package)
+  if (is.null(desc)) {
+    return(NULL)
+  }
+
+  conf <- desc$get_field("Config/testthat/start-first", NULL)
+  if (is.null(conf)) {
+    return(NULL)
+  }
+
+  trimws(strsplit(conf, ",")[[1]])
+}
+
+order_test_scripts <- function(paths, start_first) {
+  if (is.null(start_first)) return(paths)
+  filemap <- data.frame(
+    stringsAsFactors = FALSE,
+    base = sub("\\.[rR]$", "", sub("^test[-_\\.]?", "", basename(paths))),
+    orig = paths
+  )
+  rxs <- utils::glob2rx(start_first)
+  mch <- lapply(rxs, function(rx) filemap$orig[grep(rx, filemap$base)])
+  unique(c(unlist(mch), paths))
 }
