@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.99.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0.9000</span>
       </span>
     </div>
 
@@ -139,6 +139,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/">Version 3.0.0</a>
+    </li>
     <li>
       <a href="https://www.tidyverse.org/blog/2019/11/testthat-2-3-0/">Version 2.3.0</a>
     </li>
@@ -192,6 +195,26 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#testthat-development-version" class="anchor"></a>testthat (development version)<small> Unreleased </small>
 </h1>
+<ul>
+<li><p>A warning is given when snapshots are discarded due to reusing the same test name (<a href='https://github.com/r-lib/testthat/issues/1278'>#1278</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
+<li><p>New <code>testthat.progress.verbose_skips</code> option. Set to <code>FALSE</code> to stop reporting skips as they occur, they will still appear in the summary (<a href='https://github.com/r-lib/testthat/issues/1209'>#1209</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
+<li><p><code>CheckReporter</code> now always shows the full test name (<a href='https://github.com/r-lib/testthat/issues/1268'>#1268</a>).</p></li>
+<li><p>Catch C++ tests are no longer reported multiple times (<a href='https://github.com/r-lib/testthat/issues/1237'>#1237</a>) and are automatically skipped on Solaris since Catch is not supported (<a href='https://github.com/r-lib/testthat/issues/1257'>#1257</a>). <code><a href="../reference/use_catch.html">use_catch()</a></code> makes it more clear that your package needs to suggest xml2 (<a href='https://github.com/r-lib/testthat/issues/1235'>#1235</a>).</p></li>
+<li><p><code><a href="../reference/auto_test_package.html">auto_test_package()</a></code> works once again (<a href='https://github.com/mbojan'>@mbojan</a>, <a href='https://github.com/r-lib/testthat/issues/1211'>#1211</a>, <a href='https://github.com/r-lib/testthat/issues/1214'>#1214</a>)</p></li>
+<li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot()</a></code> gains new <code>error</code> argument which controls whether or not an error is expected. If an unexpected error is thrown, or an expected error is not thrown, <code><a href="../reference/expect_snapshot.html">expect_snapshot()</a></code> will fail (even on CRAN) (<a href='https://github.com/r-lib/testthat/issues/1200'>#1200</a>).</p></li>
+<li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot_value(style = "deparse")</a></code> handles more common R data structures.</p></li>
+<li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot_value()</a></code> now passes <code>...</code> on to <code><a href="https://rdrr.io/pkg/waldo/man/compare.html">waldo::compare()</a></code> (<a href='https://github.com/r-lib/testthat/issues/1222'>#1222</a>).</p></li>
+<li><p><code><a href="../reference/expect_snapshot_file.html">expect_snapshot_file()</a></code> gives a hint as to next steps when a failure occurs in non-interactive environments (with help from <a href='https://github.com/maelle'>@maelle</a>, <a href='https://github.com/r-lib/testthat/issues/1179'>#1179</a>). <code>expect_snapshot_*()</code> gives a more informative hint when you’re running tests interactively (<a href='https://github.com/r-lib/testthat/issues/1226'>#1226</a>).</p></li>
+<li><p><code>expect_snapshot_*()</code> automatically removes the <code>_snaps</code> directory if it’s empty (<a href='https://github.com/r-lib/testthat/issues/1180'>#1180</a>).</p></li>
+<li><p><code><a href="../reference/local_test_context.html">local_reproducible_output()</a></code> now sets the LANGUAGE env var to “en”. This matches the behaviour of R CMD check in interactive settings (<a href='https://github.com/r-lib/testthat/issues/1213'>#1213</a>). It also now unsets RSTUDIO envvar, instead of setting it to 0 (<a href='https://github.com/r-lib/testthat/issues/1225'>#1225</a>).</p></li>
+<li><p><code>RstudioReporter</code> has been renamed to <code>RStudioReporter</code>.</p></li>
+<li><p><code><a href="../reference/skip.html">skip_if_not()</a></code> no longer appends “is not TRUE” to custom messages (<a href='https://github.com/dpprdan'>@dpprdan</a>, <a href='https://github.com/r-lib/testthat/issues/1247'>#1247</a>).</p></li>
+</ul>
+</div>
+    <div id="testthat-300" class="section level1">
+<h1 class="page-header" data-toc-text="3.0.0">
+<a href="#testthat-300" class="anchor"></a>testthat 3.0.0<small> 2020-10-31 </small>
+</h1>
 <div id="3rd-edition" class="section level2">
 <h2 class="hasAnchor">
 <a href="<a href='https://github.com/r-lib/testthat/issues/3'>#3</a>rd-edition" class="anchor"></a>3rd edition</h2>
@@ -228,6 +251,7 @@
 <li><p>All reporters now use exactly the same format when reporting the location of an expectation.</p></li>
 <li><p>Warnings now include a backtrace, making it easier to figure out where they came from.</p></li>
 <li><p>Catch C++ tests now provide detailed results for each test. To upgrade existing code, re-run <code><a href="../reference/use_catch.html">testthat::use_catch()</a></code> (<a href='https://github.com/r-lib/testthat/issues/1008'>#1008</a>).</p></li>
+<li><p>Many reporters (e.g. the check reporter) no longer raise an error when any tests fail. Use the <code>stop_on_failure</code> argument to <code>devtools::test()</code> and <code><a href="../reference/test_dir.html">testthat::test_dir()</a></code> if your code relies on this. Alternatively, use <code>reporter = c("check", "fail")</code> to e.g. create a failing check reporter.</p></li>
 </ul>
 </div>
 <div id="fixures" class="section level2">
@@ -264,10 +288,10 @@
 <li><p>testthat no longer supports tests stored in <code>inst/tests</code>. This has been deprecated since testthat 0.11.0 (released in 2015). <code><a href="../reference/test_package.html">test_package()</a></code> (previously used for running tests in R CMD check) will fail silently if no tests are found to avoid breaking old packages on CRAN (<a href='https://github.com/r-lib/testthat/issues/1149'>#1149</a>).</p></li>
 <li><p><code><a href="../reference/capture_output.html">capture_output()</a></code> and <code><a href="../reference/verify_output.html">verify_output()</a></code> use a new <code><a href="../reference/capture_output.html">testthat_print()</a></code> generic. This allows you to control the printed representation of your object specifically for tests (i.e. if your usual print method shows data that varies in a way that you don’t care about for tests) (<a href='https://github.com/r-lib/testthat/issues/1056'>#1056</a>).</p></li>
 <li><p><code><a href="../reference/context_start_file.html">context_start_file()</a></code> is now exported for external reporters (<a href='https://github.com/r-lib/testthat/issues/983'>#983</a>, <a href='https://github.com/r-lib/testthat/issues/1082'>#1082</a>). It now only strips first instance of prefix/suffix (<a href='https://github.com/r-lib/testthat/issues/1041'>#1041</a>, <a href='https://github.com/stufield'>@stufield</a>).</p></li>
-<li><p><code><a href="../reference/expect_error.html">expect_error()</a></code> no longer encourages you to use <code>class</code>. This advice one type of fragility at the expense of creating a different type (<a href='https://github.com/r-lib/testthat/issues/1013'>#1013</a>).</p></li>
+<li><p><code><a href="../reference/expect_error.html">expect_error()</a></code> no longer encourages you to use <code>class</code>. This advice removes one type of fragility at the expense of creating a different type (<a href='https://github.com/r-lib/testthat/issues/1013'>#1013</a>).</p></li>
 <li><p><code>expect_known_failure()</code> has been removed. As far as I can tell it was only ever used by testthat, and is rather fragile.</p></li>
 <li><p><code><a href="../reference/logical-expectations.html">expect_true()</a></code>, <code><a href="../reference/logical-expectations.html">expect_false()</a></code>, and <code><a href="../reference/expect_null.html">expect_null()</a></code> now use waldo to produce more informative failures.</p></li>
-<li><p><code><a href="../reference/verify_output.html">verify_output()</a></code> no longer always fails if output contains a carriage return character (“\r”) (<a href='https://github.com/r-lib/testthat/issues/1048'>#1048</a>). It uses the <code><a href="https://rdrr.io/r/grDevices/pdf.html">pdf()</a></code> device instead of <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code> soit work on systems without X11 (<a href='https://github.com/r-lib/testthat/issues/1011'>#1011</a>). And it uses <code><a href="https://rdrr.io/pkg/waldo/man/compare.html">waldo::compare()</a></code> to give more informative failures.</p></li>
+<li><p><code><a href="../reference/verify_output.html">verify_output()</a></code> no longer always fails if output contains a carriage return character (“\r”) (<a href='https://github.com/r-lib/testthat/issues/1048'>#1048</a>). It uses the <code><a href="https://rdrr.io/r/grDevices/pdf.html">pdf()</a></code> device instead of <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code> so it works on systems without X11 (<a href='https://github.com/r-lib/testthat/issues/1011'>#1011</a>). And it uses <code><a href="https://rdrr.io/pkg/waldo/man/compare.html">waldo::compare()</a></code> to give more informative failures.</p></li>
 </ul>
 </div>
 </div>
@@ -529,17 +553,19 @@
 <a href="#quasiquotation-support" class="anchor"></a>Quasiquotation support</h3>
 <p>All expectations can now use unquoting (<a href='https://github.com/r-lib/testthat/issues/626'>#626</a>). This makes it much easier to generate informative failure messages when running tests in a for loop.</p>
 <p>For example take this test:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="va">i</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">)</span> <span class="va">i</span> <span class="op">*</span> <span class="fl">9</span> <span class="kw">else</span> <span class="va">i</span> <span class="op">*</span> <span class="fl">10</span>
 
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="va">i</span><span class="op">)</span>, <span class="va">i</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 <p>When it fails, you’ll see the message <code>Error: `f(i)` not equal to `i * 10`</code>. That’s hard to diagnose because you don’t know which iteration caused the problem!</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">i</span><span class="op">)</span>, <span class="op">!</span><span class="op">!</span><span class="op">(</span><span class="va">i</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 <p>If you unquote the values using <code>!!</code>, you get the failure message <code>`f(4L)` not equal to 40.</code>. This is much easier to diagnose! See <code>?quasi_label()</code> for more details.</p>
 <p>(Note that this is not tidy evaluation per se, but is closely related. At this time you can not unquote quosures.)</p>
 </div>
@@ -562,10 +588,11 @@
 <li><p>All files are now read and written as UTF-8 (<a href='https://github.com/r-lib/testthat/issues/510'>#510</a>, <a href='https://github.com/r-lib/testthat/issues/605'>#605</a>).</p></li>
 <li>
 <p><code><a href="../reference/is_testing.html">is_testing()</a></code> allows you to tell if your code is being run inside a testing environment (<a href='https://github.com/r-lib/testthat/issues/631'>#631</a>). Rather than taking a run-time dependency on testthat you may want to inline the function into your own package:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="va">is_testing</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"TESTTHAT"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 <p>It’s frequently useful to combine with <code><a href="https://rdrr.io/r/base/interactive.html">interactive()</a></code>.</p>
 </li>
 </ul>
@@ -680,11 +707,12 @@
 <a href="#new-expectations-1" class="anchor"></a>New expectations</h2>
 <p>The expectation system got a thorough overhaul (<a href='https://github.com/r-lib/testthat/issues/217'>#217</a>). This primarily makes it easier to add new expectations in the future, but also included a thorough review of the documentation, ensuring that related expectations are documented together, and have evocative names.</p>
 <p>One useful change is that most expectations invisibly return the input <code>object</code>. This makes it possible to chain together expectations with magrittr:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="st">"integer"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/inheritance-expectations.html">expect_s3_class</a></span><span class="op">(</span><span class="st">"factor"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/expect_length.html">expect_length</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="../reference/expect_length.html">expect_length</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p>(And to make this style even easier, testthat now re-exports the pipe, <a href='https://github.com/r-lib/testthat/issues/412'>#412</a>).</p>
 <p>The exception to this rule are the expectations that evaluate (i.e. for messages, warnings, errors, output etc), which invisibly return <code>NULL</code>. These functions are now more consistent: using <code>NA</code> will cause a failure if there is a errors/warnings/mesages/output (i.e. they’re not missing), and will <code>NULL</code> fail if there aren’t any errors/warnings/mesages/output. This previously didn’t work for <code><a href="../reference/expect_output.html">expect_output()</a></code> (<a href='https://github.com/r-lib/testthat/issues/323'>#323</a>), and the error messages were confusing with <code><a href="../reference/expect_error.html">expect_error(..., NA)</a></code> (<a href='https://github.com/r-lib/testthat/issues/342'>#342</a>, <a href='https://github.com/nealrichardson'>@nealrichardson</a> + <a href='https://github.com/krlmlr'>@krlmlr</a>, <a href='https://github.com/r-lib/testthat/issues/317'>#317</a>).</p>
 <p>Another change is that <code><a href="../reference/expect_output.html">expect_output()</a></code> now requires you to explicitly print the output if you want to test a print method: <code><a href="../reference/expect_output.html">expect_output("a", "a")</a></code> will fail, <code><a href="../reference/expect_output.html">expect_output(print("a"), "a")</a></code> will succeed.</p>

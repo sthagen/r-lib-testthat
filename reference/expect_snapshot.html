@@ -105,7 +105,7 @@ expect_known_value(), and expect_known_hash().)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.99.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0.9000</span>
       </span>
     </div>
 
@@ -155,6 +155,9 @@ expect_known_value(), and expect_known_hash().)" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/">Version 3.0.0</a>
+    </li>
     <li>
       <a href="https://www.tidyverse.org/blog/2019/11/testthat-2-3-0/">Version 2.3.0</a>
     </li>
@@ -224,7 +227,7 @@ output from code.</p></li>
 <code><a href='expect_known_output.html'>expect_known_value()</a></code>, and <code><a href='expect_known_output.html'>expect_known_hash()</a></code>.)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>expect_snapshot</span><span class='op'>(</span><span class='va'>x</span>, cran <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>expect_snapshot</span><span class='op'>(</span><span class='va'>x</span>, cran <span class='op'>=</span> <span class='cn'>FALSE</span>, error <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='fu'>expect_snapshot_output</span><span class='op'>(</span><span class='va'>x</span>, cran <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
@@ -233,7 +236,8 @@ output from code.</p></li>
 <span class='fu'>expect_snapshot_value</span><span class='op'>(</span>
   <span class='va'>x</span>,
   style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"json"</span>, <span class='st'>"json2"</span>, <span class='st'>"deparse"</span>, <span class='st'>"serialize"</span><span class='op'>)</span>,
-  cran <span class='op'>=</span> <span class='cn'>FALSE</span>
+  cran <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -247,8 +251,13 @@ output from code.</p></li>
       <th>cran</th>
       <td><p>Should these expectations be verified on CRAN? By default,
 they are not, because snapshot tests tend to be fragile because they
-often rely on minor details of dependencies. Even on CRAN, the
-expectations will still fail if <code>x</code> errors.</p></td>
+often rely on minor details of dependencies.</p></td>
+    </tr>
+    <tr>
+      <th>error</th>
+      <td><p>Do you expect the code to throw an error? The expectation
+will fail (even on CRAN) if an unexpected error is thrown or the
+expected error is not thrown.</p></td>
     </tr>
     <tr>
       <th>class</th>
@@ -272,6 +281,11 @@ using R code.</p></li>
 but produces a completely opaque serialization.</p></li>
 </ul></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>For <code>expect_snapshot_value()</code> only, passed on to
+<code><a href='https://rdrr.io/pkg/waldo/man/compare.html'>waldo::compare()</a></code> so you can control the details of the comparison.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="workflow"><a class="anchor" href="#workflow"></a>Workflow</h2>
@@ -292,6 +306,10 @@ on disk. If it's different, the expectation will fail, and a new file
 <code>snap/{test}.new.json</code> will be created. If the change was deliberate,
 you can approve the change with <code><a href='snapshot_accept.html'>snapshot_accept()</a></code> and then the tests will
 pass the next time you run them.</p>
+<p>Note that snapshotting can onµly work when executing a complete test file
+(with <code><a href='test_file.html'>test_file()</a></code>, <code><a href='test_dir.html'>test_dir()</a></code>, or friends) because there's otherwise
+no way to figure out the snapshot path. If you run snapshot tests
+interactively, they'll just display the current value.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

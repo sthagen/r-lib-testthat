@@ -92,7 +92,7 @@ testthat." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.99.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0.9000</span>
       </span>
     </div>
 
@@ -142,6 +142,9 @@ testthat." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/">Version 3.0.0</a>
+    </li>
     <li>
       <a href="https://www.tidyverse.org/blog/2019/11/testthat-2-3-0/">Version 2.3.0</a>
     </li>
@@ -224,6 +227,12 @@ showcases how you might use Catch to write a unit test,</p></li>
 <span style="R">R</span> will automatically register this routine when
 <code><a href='https://rdrr.io/r/tools/package_native_routine_registration_skeleton.html'>tools::package_native_routine_registration_skeleton()</a></code> is invoked.</p></li>
 </ol>
+
+<p>You will also need to:</p><ul>
+<li><p>Add xml2 to Suggests, with e.g. <code><a href='https://usethis.r-lib.org/reference/use_package.html'>usethis::use_package("xml2", "Suggests")</a></code></p></li>
+<li><p>Add testthat to LinkingTo, with e.g.
+<code><a href='https://usethis.r-lib.org/reference/use_package.html'>usethis::use_package("testthat", "LinkingTo")</a></code></p></li>
+</ul>
 
 <p>C++ unit tests can be added to C++ source files within the
 <code>src</code> directory of your package, with a format similar

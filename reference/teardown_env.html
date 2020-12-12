@@ -47,9 +47,9 @@
 
 
 <meta property="og:title" content="Run code after all test files — teardown_env" />
-<meta property="og:description" content="This environment no purpose except as a handle for withr::defer(): use
-this environment when you want to run code until after all tests have been
-run. Typically, you'll use withr::defer(cleanup(), teardown_env())
+<meta property="og:description" content="This environment has no purpose other than as a handle for withr::defer():
+use it when you want to run code after all tests have been run.
+Typically, you'll use withr::defer(cleanup(), teardown_env())
 immediately after you've made a mess in a setup-*.R file." />
 <meta property="og:image" content="https://testthat.r-lib.org/logo.png" />
 
@@ -93,7 +93,7 @@ immediately after you've made a mess in a setup-*.R file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.99.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0.9000</span>
       </span>
     </div>
 
@@ -143,6 +143,9 @@ immediately after you've made a mess in a setup-*.R file." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/">Version 3.0.0</a>
+    </li>
     <li>
       <a href="https://www.tidyverse.org/blog/2019/11/testthat-2-3-0/">Version 2.3.0</a>
     </li>
@@ -194,9 +197,9 @@ immediately after you've made a mess in a setup-*.R file." />
     </div>
 
     <div class="ref-description">
-    <p>This environment no purpose except as a handle for <code><a href='https://withr.r-lib.org/reference/defer.html'>withr::defer()</a></code>: use
-this environment when you want to run code until after all tests have been
-run. Typically, you'll use <code><a href='https://withr.r-lib.org/reference/defer.html'>withr::defer(cleanup(), teardown_env())</a></code>
+    <p>This environment has no purpose other than as a handle for <code><a href='https://withr.r-lib.org/reference/defer.html'>withr::defer()</a></code>:
+use it when you want to run code after all tests have been run.
+Typically, you'll use <code><a href='https://withr.r-lib.org/reference/defer.html'>withr::defer(cleanup(), teardown_env())</a></code>
 immediately after you've made a mess in a <code>setup-*.R</code> file.</p>
     </div>
 

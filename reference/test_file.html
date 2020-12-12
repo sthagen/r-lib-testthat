@@ -47,8 +47,7 @@
 
 
 <meta property="og:title" content="Run all tests in a single file — test_file" />
-<meta property="og:description" content="A variant of test_dir() that only tests a single file within a directory.
-Helper, setup, and teardown files located in the same directory as the
+<meta property="og:description" content="Helper, setup, and teardown files located in the same directory as the
 test will also be run." />
 <meta property="og:image" content="https://testthat.r-lib.org/logo.png" />
 
@@ -92,7 +91,7 @@ test will also be run." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.99.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0.9000</span>
       </span>
     </div>
 
@@ -142,6 +141,9 @@ test will also be run." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/">Version 3.0.0</a>
+    </li>
     <li>
       <a href="https://www.tidyverse.org/blog/2019/11/testthat-2-3-0/">Version 2.3.0</a>
     </li>
@@ -193,8 +195,7 @@ test will also be run." />
     </div>
 
     <div class="ref-description">
-    <p>A variant of <code><a href='test_dir.html'>test_dir()</a></code> that only tests a single file within a directory.
-Helper, setup, and teardown files located in the same directory as the
+    <p>Helper, setup, and teardown files located in the same directory as the
 test will also be run.</p>
     </div>
 
@@ -235,7 +236,7 @@ as a string (e.g. "summary") or as an R6 object
 <li><p>Test files start with <code>test</code> and are executed in alphabetical order.</p></li>
 <li><p>Setup files start with <code>setup</code> and are executed before tests. If
 clean up is needed after all tests have been run, you can use
-<code><a href='https://withr.r-lib.org/reference/defer.html'>withr::defer(clean_up(), teardown_env())</a></code>. See <code>vignette("text-fixtures")</code>
+<code><a href='https://withr.r-lib.org/reference/defer.html'>withr::defer(clean_up(), teardown_env())</a></code>. See <code><a href='../articles/test-fixtures.html'>vignette("test-fixtures")</a></code>
 for more details.</p></li>
 </ul>
 
