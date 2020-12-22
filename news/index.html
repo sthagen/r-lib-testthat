@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.1</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -170,7 +170,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/testthat/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -191,24 +191,24 @@
       <small>Source: <a href='https://github.com/r-lib/testthat/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="testthat-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="development version">
-<a href="#testthat-development-version" class="anchor"></a>testthat (development version)<small> Unreleased </small>
+    <div id="testthat-301" class="section level1">
+<h1 class="page-header" data-toc-text="3.0.1">
+<a href="#testthat-301" class="anchor"></a>testthat 3.0.1<small> 2020-12-17 </small>
 </h1>
 <ul>
-<li><p>A warning is given when snapshots are discarded due to reusing the same test name (<a href='https://github.com/r-lib/testthat/issues/1278'>#1278</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
-<li><p>New <code>testthat.progress.verbose_skips</code> option. Set to <code>FALSE</code> to stop reporting skips as they occur, they will still appear in the summary (<a href='https://github.com/r-lib/testthat/issues/1209'>#1209</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
-<li><p><code>CheckReporter</code> now always shows the full test name (<a href='https://github.com/r-lib/testthat/issues/1268'>#1268</a>).</p></li>
+<li><p>New <code>testthat.progress.verbose_skips</code> option. Set to <code>FALSE</code> to stop reporting skips as they occur; they will still appear in the summary (<a href='https://github.com/r-lib/testthat/issues/1209'>#1209</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
+<li><p><code>CheckReporter</code> results have been tweaked based on experiences from running R CMD check on many packages. Hopefully it should now be easier to see the biggest problems (i.e. failures and errors) while still having skips and warnings available to check if needed (<a href='https://github.com/r-lib/testthat/issues/1274'>#1274</a>). And now the full test name is always shown, no matter how long (<a href='https://github.com/r-lib/testthat/issues/1268'>#1268</a>).</p></li>
 <li><p>Catch C++ tests are no longer reported multiple times (<a href='https://github.com/r-lib/testthat/issues/1237'>#1237</a>) and are automatically skipped on Solaris since Catch is not supported (<a href='https://github.com/r-lib/testthat/issues/1257'>#1257</a>). <code><a href="../reference/use_catch.html">use_catch()</a></code> makes it more clear that your package needs to suggest xml2 (<a href='https://github.com/r-lib/testthat/issues/1235'>#1235</a>).</p></li>
-<li><p><code><a href="../reference/auto_test_package.html">auto_test_package()</a></code> works once again (<a href='https://github.com/mbojan'>@mbojan</a>, <a href='https://github.com/r-lib/testthat/issues/1211'>#1211</a>, <a href='https://github.com/r-lib/testthat/issues/1214'>#1214</a>)</p></li>
+<li><p><code><a href="../reference/auto_test_package.html">auto_test_package()</a></code> works once again (<a href='https://github.com/mbojan'>@mbojan</a>, <a href='https://github.com/r-lib/testthat/issues/1211'>#1211</a>, <a href='https://github.com/r-lib/testthat/issues/1214'>#1214</a>).</p></li>
 <li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot()</a></code> gains new <code>error</code> argument which controls whether or not an error is expected. If an unexpected error is thrown, or an expected error is not thrown, <code><a href="../reference/expect_snapshot.html">expect_snapshot()</a></code> will fail (even on CRAN) (<a href='https://github.com/r-lib/testthat/issues/1200'>#1200</a>).</p></li>
 <li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot_value(style = "deparse")</a></code> handles more common R data structures.</p></li>
 <li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot_value()</a></code> now passes <code>...</code> on to <code><a href="https://rdrr.io/pkg/waldo/man/compare.html">waldo::compare()</a></code> (<a href='https://github.com/r-lib/testthat/issues/1222'>#1222</a>).</p></li>
 <li><p><code><a href="../reference/expect_snapshot_file.html">expect_snapshot_file()</a></code> gives a hint as to next steps when a failure occurs in non-interactive environments (with help from <a href='https://github.com/maelle'>@maelle</a>, <a href='https://github.com/r-lib/testthat/issues/1179'>#1179</a>). <code>expect_snapshot_*()</code> gives a more informative hint when you’re running tests interactively (<a href='https://github.com/r-lib/testthat/issues/1226'>#1226</a>).</p></li>
-<li><p><code>expect_snapshot_*()</code> automatically removes the <code>_snaps</code> directory if it’s empty (<a href='https://github.com/r-lib/testthat/issues/1180'>#1180</a>).</p></li>
+<li><p><code>expect_snapshot_*()</code> automatically removes the <code>_snaps</code> directory if it’s empty (<a href='https://github.com/r-lib/testthat/issues/1180'>#1180</a>). It also warns if snapshots are discarded because tests have duplicated names (<a href='https://github.com/r-lib/testthat/issues/1278'>#1278</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
 <li><p><code><a href="../reference/local_test_context.html">local_reproducible_output()</a></code> now sets the LANGUAGE env var to “en”. This matches the behaviour of R CMD check in interactive settings (<a href='https://github.com/r-lib/testthat/issues/1213'>#1213</a>). It also now unsets RSTUDIO envvar, instead of setting it to 0 (<a href='https://github.com/r-lib/testthat/issues/1225'>#1225</a>).</p></li>
 <li><p><code>RstudioReporter</code> has been renamed to <code>RStudioReporter</code>.</p></li>
 <li><p><code><a href="../reference/skip.html">skip_if_not()</a></code> no longer appends “is not TRUE” to custom messages (<a href='https://github.com/dpprdan'>@dpprdan</a>, <a href='https://github.com/r-lib/testthat/issues/1247'>#1247</a>).</p></li>
+<li><p><code><a href="../reference/test_that.html">test_that()</a></code> now warns (3e only) if code doesn’t have braces, since that makes it hard to track the source of an error (<a href='https://github.com/r-lib/testthat/issues/1280'>#1280</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
 </ul>
 </div>
     <div id="testthat-300" class="section level1">
@@ -543,7 +543,7 @@
 <a href="#known-good-values" class="anchor"></a>Known good values</h3>
 <p>We have identified a useful family of expectations that compares the results of an expression to a known good value stored in a file. They are designed to be use in conjunction with git so that you can see what precisely has changed, and revert it if needed.</p>
 <ul>
-<li><p><code><a href="../reference/expect_known_output.html">expect_known_output()</a></code> replaces <code><a href="../reference/expect_known_output.html">expect_output_file()</a></code>, which has been soft-deprecated. It now defaults to <code>update = TRUE</code> and warn, rather than failing on the first run. It gains a <code>print</code> argument to automatically print the input (<a href='https://github.com/r-lib/testthat/issues/627'>#627</a>). It also sets the width option to 80 to ensure consistent output across environments (<a href='https://github.com/r-lib/testthat/issues/514'>#514</a>)</p></li>
+<li><p><code><a href="../reference/expect_known_output.html">expect_known_output()</a></code> replaces <code><a href="../reference/expect_output_file.html">expect_output_file()</a></code>, which has been soft-deprecated. It now defaults to <code>update = TRUE</code> and warn, rather than failing on the first run. It gains a <code>print</code> argument to automatically print the input (<a href='https://github.com/r-lib/testthat/issues/627'>#627</a>). It also sets the width option to 80 to ensure consistent output across environments (<a href='https://github.com/r-lib/testthat/issues/514'>#514</a>)</p></li>
 <li><p><code><a href="../reference/expect_known_output.html">expect_known_value()</a></code> replaces <code><a href="../reference/expect_known_output.html">expect_equal_to_reference()</a></code>, which has been soft-deprecated. It gains an update argument defaulting to <code>TRUE</code>. This changes behaviour from the previous version, and soft-deprecated <code><a href="../reference/expect_known_output.html">expect_equal_to_reference()</a></code> gets <code>update = FALSE</code>.</p></li>
 <li><p><code>expect_known_failure()</code> stored and compares the failure message from an expectation. It’s a useful regression test when developing informative failure messges for your own expectations.</p></li>
 </ul>
@@ -680,7 +680,7 @@
 <a href="#testthat-101" class="anchor"></a>testthat 1.0.1<small> 2016-04-21 </small>
 </h1>
 <ul>
-<li><p>New <code><a href="../reference/expect_known_output.html">expect_output_file()</a></code> to compare output of a function with a text file, and optionally update it (<a href='https://github.com/r-lib/testthat/issues/443'>#443</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
+<li><p>New <code><a href="../reference/expect_output_file.html">expect_output_file()</a></code> to compare output of a function with a text file, and optionally update it (<a href='https://github.com/r-lib/testthat/issues/443'>#443</a>, <a href='https://github.com/krlmlr'>@krlmlr</a>).</p></li>
 <li><p>Properly scoped use + compilation of C++ unit testing code using Catch to <code>gcc</code> and <code>clang</code> only, as Catch includes code that does not strictly conform to the C++98 standard. (<a href='https://github.com/kevinushey'>@kevinushey</a>)</p></li>
 <li><p>Fixed an out-of-bounds memory access when routing Catch output through <code>Rprintf()</code>. (<a href='https://github.com/kevinushey'>@kevinushey</a>)</p></li>
 <li>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Test reporter: Teamcity format. — TeamcityReporter • testthat</title>
+<title>Expectations: is the output or the value equal to a known good value? — expect_output_file • testthat</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,8 @@
 
 
 
-<meta property="og:title" content="Test reporter: Teamcity format. — TeamcityReporter" />
-<meta property="og:description" content="This reporter will output results in the Teamcity message format.
-For more information about Teamcity messages, see
-http://confluence.jetbrains.com/display/TCD7/Build+Script+Interaction+with+TeamCity" />
+<meta property="og:title" content="Expectations: is the output or the value equal to a known good value? — expect_output_file" />
+<meta property="og:description" content="expect_output_file() behaves identically to expect_known_output()." />
 <meta property="og:image" content="https://testthat.r-lib.org/logo.png" />
 
 
@@ -190,36 +188,34 @@ http://confluence.jetbrains.com/display/TCD7/Build+Script+Interaction+with+TeamC
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Test reporter: Teamcity format.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/testthat/blob/master/R/reporter-teamcity.R'><code>R/reporter-teamcity.R</code></a></small>
-    <div class="hidden name"><code>TeamcityReporter.Rd</code></div>
+    <h1>Expectations: is the output or the value equal to a known good value?</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/testthat/blob/master/R/expect-known.R'><code>R/expect-known.R</code></a></small>
+    <div class="hidden name"><code>expect_output_file.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This reporter will output results in the Teamcity message format.
-For more information about Teamcity messages, see
-http://confluence.jetbrains.com/display/TCD7/Build+Script+Interaction+with+TeamCity</p>
+    <p><code>expect_output_file()</code> behaves identically to <code><a href='expect_known_output.html'>expect_known_output()</a></code>.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>expect_output_file</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  <span class='va'>file</span>,
+  update <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>...</span>,
+  info <span class='op'>=</span> <span class='cn'>NULL</span>,
+  label <span class='op'>=</span> <span class='cn'>NULL</span>,
+  print <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  width <span class='op'>=</span> <span class='fl'>80</span>
+<span class='op'>)</span></pre>
 
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="-rd-edition"><a class="anchor" href="#-rd-edition"></a>3rd edition</h2>
 
-    <div class='dont-index'><p>Other reporters: 
-<code><a href='CheckReporter.html'>CheckReporter</a></code>,
-<code><a href='DebugReporter.html'>DebugReporter</a></code>,
-<code><a href='FailReporter.html'>FailReporter</a></code>,
-<code><a href='ListReporter.html'>ListReporter</a></code>,
-<code><a href='LocationReporter.html'>LocationReporter</a></code>,
-<code><a href='MinimalReporter.html'>MinimalReporter</a></code>,
-<code><a href='MultiReporter.html'>MultiReporter</a></code>,
-<code><a href='ProgressReporter.html'>ProgressReporter</a></code>,
-<code><a href='RStudioReporter.html'>RStudioReporter</a></code>,
-<code><a href='Reporter.html'>Reporter</a></code>,
-<code><a href='SilentReporter.html'>SilentReporter</a></code>,
-<code><a href='StopReporter.html'>StopReporter</a></code>,
-<code><a href='SummaryReporter.html'>SummaryReporter</a></code>,
-<code><a href='TapReporter.html'>TapReporter</a></code></p></div>
+    
+
+<p><img src='figures/lifecycle-deprecated.svg' alt='Deprecated lifecycle' /></p>
+<p><code>expect_output_file()</code> is deprecated in the 3rd edition;
+please use <code><a href='expect_snapshot.html'>expect_snapshot_output()</a></code> and friends instead.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
