@@ -1,3 +1,26 @@
+# testthat (development version)
+
+# testthat 3.0.2
+
+* Failing expectations now include a backtrace when they're not called directly
+  from within `test_that()` but are instead wrapped in some helper function 
+  (#1307).
+  
+* `CheckReporter` now only records warnings when not on CRAN. Otherwise 
+  failed CRAN revdep checks tend to be cluttered up with warnings (#1300).
+  It automatically cleans up `testthat-problems.rds` left over from previous
+  runs if the latest run is succesful (#1314).
+
+* `expect_s3_class()` and `expect_s4_class()` can now check that an object
+  _isn't_ an S3 or S4 object by supplying `NA` to the second argument (#1321).
+
+* `expect_s3_class()` and `expect_s4_class()` format class names in a less
+  confusing way (#1322).
+
+* `expect_snapshot()` collapses multiple adjacent headings of the same, so
+  that, e.g., if you have multiple lines of code in a row, you'll only see
+  one "Code:" heading (#1311).
+
 # testthat 3.0.1
 
 * New `testthat.progress.verbose_skips` option. Set to `FALSE` to stop

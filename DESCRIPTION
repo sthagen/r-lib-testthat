@@ -1,6 +1,6 @@
 Package: testthat
 Title: Unit Testing for R
-Version: 3.0.1
+Version: 3.0.2.9000
 Authors@R: 
     c(person(given = "Hadley",
              family = "Wickham",
@@ -41,7 +41,7 @@ Imports:
     R6 (>= 2.2.0),
     rlang (>= 0.4.9),
     utils,
-    waldo (>= 0.2.1),
+    waldo (>= 0.2.4),
     withr (>= 2.3.0)
 Suggests: 
     covr,

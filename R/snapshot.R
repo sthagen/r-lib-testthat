@@ -27,7 +27,7 @@
 #'
 #' It's important to review the JSON files and commit them to git. They are
 #' designed to be human readable, and you should always review new additions
-#' to ensure that the salient information has been capture. They should also
+#' to ensure that the salient information has been captured. They should also
 #' be carefully reviewed in pull requests, to make sure that snapshots have
 #' updated in the expected way.
 #'
@@ -37,7 +37,7 @@
 #' you can approve the change with [snapshot_accept()] and then the tests will
 #' pass the next time you run them.
 #'
-#' Note that snapshotting can onµly work when executing a complete test file
+#' Note that snapshotting can only work when executing a complete test file
 #' (with [test_file()], [test_dir()], or friends) because there's otherwise
 #' no way to figure out the snapshot path. If you run snapshot tests
 #' interactively, they'll just display the current value.
@@ -65,6 +65,7 @@ expect_snapshot <- function(x, cran = FALSE, error = FALSE) {
   msg <- compare_condition_3e("error", state$error, quo_label(x), error)
   if (!is.null(msg)) {
     expect(FALSE, msg, trace = state$error[["trace"]])
+    return()
   }
 
   expect_snapshot_helper("code", out, cran = cran,
@@ -78,11 +79,11 @@ snapshot_replay <- function(x, state) {
 }
 #' @export
 snapshot_replay.character <- function(x, state) {
-  c("Output", indent(split_lines(x)))
+  c(snap_header(state, "Output"), indent(split_lines(x)))
 }
 #' @export
 snapshot_replay.source <- function(x, state) {
-  c("Code", indent(split_lines(x$src)))
+  c(snap_header(state, "Code"), indent(split_lines(x$src)))
 }
 #' @export
 snapshot_replay.condition <- function(x, state) {
@@ -101,7 +102,14 @@ snapshot_replay.condition <- function(x, state) {
 
   class <- paste0(type, " <", class(x)[[1]], ">")
 
-  c(class, indent(split_lines(msg)))
+  c(snap_header(state, class), indent(split_lines(msg)))
+}
+
+snap_header <- function(state, header) {
+  if (!identical(state$header, header)) {
+    state$header <- header
+    header
+  }
 }
 
 #' @export
@@ -221,7 +229,8 @@ expect_snapshot_helper <- function(lab, val,
       lab,
       paste0(comp, collapse = "\n\n"),
       hint
-    )
+    ),
+    trace_env = caller_env()
   )
 }
 

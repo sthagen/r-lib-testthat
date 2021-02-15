@@ -12,10 +12,12 @@ expect_is(object, class, info = NULL, label = NULL)
 Supports limited unquoting to make it easier to generate readable failures
 within a function or for loop. See \link{quasi_label} for more details.}
 
-\item{class}{character vector of class names}
+\item{class}{Either a character vector of class names, or
+for \code{expect_s3_class()} and \code{expect_s4_class()}, an \code{NA} to assert
+that \code{object} isn't an S3 or S4 object.}
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#superseded'><img src='figures/lifecycle-superseded.svg' alt='Superseded lifecycle'></a>}}{\strong{Superseded}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
 
 \code{expect_is()} is an older form that uses \code{\link[=inherits]{inherits()}} without checking
 whether \code{x} is S3, S4, or neither. Instead, I'd recommend using
@@ -24,7 +26,7 @@ convey your  intent.
 }
 \section{3rd edition}{
 
-\ifelse{html}{\figure{lifecycle-deprecated.svg}{options: alt='Deprecated lifecycle'}}{\strong{Deprecated}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 \code{expect_is()} is formally deprecated in the 3rd edition.
 }
