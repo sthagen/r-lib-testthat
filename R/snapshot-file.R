@@ -16,11 +16,27 @@
 #' of ensuring that output is as reproducible as possible, e.g. automatically
 #' skipping tests where it's known that images can't be reproduced exactly.
 #'
-#' @param path Path to file to snapshot.
+#' @param path Path to file to snapshot. Optional for
+#'   `announce_snapshot_file()` if `name` is supplied.
 #' @param name Snapshot name, taken from `path` by default.
-#' @param binary If `FALSE`, files are compared line-by-line, ignoring the
-#'   difference between Windows and Mac/Linux line endings.
+#' @param binary `r lifecycle::badge("deprecated")` Please use the
+#'   `compare` argument instead.
+#' @param compare A function used for comparison taking `old` and
+#'   `new` arguments. By default this is `compare_file_binary`. Set it
+#'   to `compare_file_text` to compare files line-by-line, ignoring
+#'   the difference between Windows and Mac/Linux line endings.
 #' @inheritParams expect_snapshot
+#'
+#' @section Announcing snapshots:
+#' testthat automatically detects dangling snapshots that have been
+#' written to the `_snaps` directory but which no longer have
+#' corresponding R code to generate them. These dangling files are
+#' automatically deleted so they don't clutter the snapshot
+#' directory. However we want to preserve snapshot files when the R
+#' code wasn't executed because of an unexpected error or because of a
+#' [skip()]. Let testthat know about these files by calling
+#' `announce_snapshot_file()` before `expect_snapshot_file()`.
+#'
 #' @export
 #' @examples
 #'
@@ -50,10 +66,21 @@
 #'   skip_on_os("windows")
 #'   # You'll need to carefully think about and experiment with these skips
 #'
+#'   name <- paste0(name, ".png")
+#'
+#'   # Announce the file before touching `code`. This way, if `code`
+#'   # unexpectedly fails or skips, testthat will not auto-delete the
+#'   # corresponding snapshot file.
+#'   announce_snapshot_file(name = name)
+#'
 #'   path <- save_png(code)
-#'   expect_snapshot_file(path, paste0(name, ".png"))
+#'   expect_snapshot_file(path, name)
 #' }
-expect_snapshot_file <- function(path, name = basename(path), binary = TRUE, cran = FALSE) {
+expect_snapshot_file <- function(path,
+                                 name = basename(path),
+                                 binary = lifecycle::deprecated(),
+                                 cran = FALSE,
+                                 compare =  compare_file_binary) {
   edition_require(3, "expect_snapshot_file()")
   if (!cran && !interactive() && on_cran()) {
     skip("On CRAN")
@@ -64,7 +91,15 @@ expect_snapshot_file <- function(path, name = basename(path), binary = TRUE, cra
     snapshot_not_available(paste0("New path: ", path))
     return(invisible())
   }
-  compare <- if (binary) compare_file_binary else compare_file_text
+
+  if (!is_missing(binary)) {
+    lifecycle::deprecate_soft(
+      "3.0.3",
+      "expect_snapshot_file(binary = )",
+      "expect_snapshot_file(compare = )"
+    )
+    compare <- if (binary) compare_file_binary else compare_file_text
+  }
 
   lab <- quo_label(enquo(path))
   equal <- snapshotter$take_file_snapshot(name, path, compare)
@@ -73,11 +108,22 @@ expect_snapshot_file <- function(path, name = basename(path), binary = TRUE, cra
   expect(
     equal,
     sprintf(
-      "Shapshot of %s to '%s' has changed\n%s",
+      "Snapshot of %s to '%s' has changed\n%s",
       lab, paste0(snapshotter$file, "/", name),
       hint
     )
   )
+}
+
+#' @rdname expect_snapshot_file
+#' @export
+announce_snapshot_file <- function(path, name = basename(path)) {
+  edition_require(3, "announce_snapshot_file()")
+
+  snapshotter <- get_snapshotter()
+  if (!is.null(snapshotter)) {
+    snapshotter$announce_file_snapshot(name)
+  }
 }
 
 snapshot_hint <- function(test, name, ci = on_ci(), check = in_rcmd_check()) {
@@ -185,12 +231,16 @@ local_snap_dir <- function(paths, .env = parent.frame()) {
   dir
 }
 
+#' @rdname expect_snapshot_file
+#' @param old,new Paths to old and new snapshot files.
+#' @export
 compare_file_binary <- function(old, new) {
   old <- brio::read_file_raw(old)
   new <- brio::read_file_raw(new)
   identical(old, new)
 }
-
+#' @rdname expect_snapshot_file
+#' @export
 compare_file_text <- function(old, new) {
   old <- brio::read_lines(old)
   new <- brio::read_lines(new)

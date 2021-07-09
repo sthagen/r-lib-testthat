@@ -1,5 +1,83 @@
 # testthat (development version)
 
+* `expect_snapshot_value()` now has an explicit `tolerance` which uses the 
+  testthat default, thus making it more like `expect_equal()` rather than
+  `expect_identical()`. Set to `NULL` if you want precise comparisons (#1309).
+
+* `testthat_tolerance()` no longer has an unused argument.
+
+* `expect_snapshot_value(style = "deparse")` now works with negative values
+  (#1342).
+
+* Condition expectations now consistently return the expected
+  condition instead of the return value (#1371). Previously, they
+  would only return the condition if the return value was `NULL`,
+  leading to inconsistent behaviour.
+  
+  This is a breaking change (it only affects edition 3). Where you
+  could previously do:
+  
+  ```
+  expect_equal(expect_warning(f(), "warning"), "value")
+  ```
+  
+  You must now use condition expectations on the outside:
+  
+  ```
+  expect_warning(expect_equal(f(), "value"), "warning")
+  
+  # Equivalently, save the value before inspection
+  expect_warning(value <- f(), "warning")
+  expect_equal(value, "value")
+  
+  # If you use `=` instead of `<-` be sure to disambiguate
+  # assignment and argument passing with braces
+  expect_warning({ value = f() }, "warning")
+  expect_equal(value, "value")
+  ```
+  
+  This breaking change makes testthat more consistent. It also makes
+  it possible to inspect both the value and the warning, which would
+  require additional tools otherwise.
+
+# testthat 3.0.4
+  
+* The vendored Catch code used for `use_catch()` now uses a constant
+  value for the stack size rather than relying on SIGSTKSZ. This
+  fixes compatibility for recent glibc versions where SIGSTKSZ is no
+  longer a constant.
+
+* Fixed an issue that caused errors and early termination of tests on
+  R <= 3.6 when a failing condition expectation was signalled inside a
+  snapshot.
+
+# testthat 3.0.3
+
+* `expect_snapshot_file()` gains a `compare` argument (#1378,
+  @nbenn). This is a customisation point for how to compare old and
+  new snapshot files.
+  
+  The functions `compare_file_binary()` and `compare_file_text()` are
+  now exported from testthat to be supplied as `compare`
+  argument. These implement the same behaviour as the old `binary`
+  argument which is now deprecated.
+
+* `expect_snapshot()` no longer deletes snapshots when an unexpected
+  error occurs.
+
+* New `announce_snapshot_file()` function for developers of testthat
+  extensions. Announcing a snapshot file allows testthat to preserve
+  files that were not generated because of an unexpected error or a
+  `skip()` (#1393). Unannounced files are automatically deleted during
+  cleanup if the generating code isn't called.
+
+* New expectation: `expect_no_match()`. It complements `expect_match()` by
+  checking if a string **doesn't match** a regular expression
+  (@michaelquinn32, #1381).
+  
+ * Support setting the testthat edition via an environment variable
+  (`TESTTHAT_EDITION`) as well (@michaelquinn32, #1386).
+ 
 # testthat 3.0.2
 
 * Failing expectations now include a backtrace when they're not called directly

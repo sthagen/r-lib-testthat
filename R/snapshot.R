@@ -64,7 +64,11 @@ expect_snapshot <- function(x, cran = FALSE, error = FALSE) {
   # Use expect_error() machinery to confirm that error is as expected
   msg <- compare_condition_3e("error", state$error, quo_label(x), error)
   if (!is.null(msg)) {
-    expect(FALSE, msg, trace = state$error[["trace"]])
+    if (error) {
+      expect(FALSE, msg, trace = state$error[["trace"]])
+    } else {
+      exp_signal(expectation("error", msg, trace = state$error[["trace"]]))
+    }
     return()
   }
 
@@ -158,10 +162,12 @@ expect_snapshot_error <- function(x, class = "error", cran = FALSE) {
 #' @param ... For `expect_snapshot_value()` only, passed on to
 #'   [waldo::compare()] so you can control the details of the comparison.
 #' @export
+#' @inheritParams compare
 #' @rdname expect_snapshot
 expect_snapshot_value <- function(x,
                                   style = c("json", "json2", "deparse", "serialize"),
                                   cran = FALSE,
+                                  tolerance = testthat_tolerance(),
                                   ...) {
   edition_require(3, "expect_snapshot_value()")
   lab <- quo_label(enquo(x))
@@ -181,13 +187,14 @@ expect_snapshot_value <- function(x,
     serialize = function(x) unserialize(jsonlite::base64_dec(x))
   )
 
-  expect_snapshot_helper(lab, x, save = save, load = load, cran = cran, ...)
+  expect_snapshot_helper(lab, x, save = save, load = load, cran = cran, tolerance = tolerance, ...)
 }
 
 # Safe environment for evaluating deparsed objects, based on inspection of
 # https://github.com/wch/r-source/blob/5234fe7b40aad8d3929d240c83203fa97d8c79fc/src/main/deparse.c#L845
 reparse <- function(x) {
   env <- env(emptyenv(),
+    `-` = `-`,
     c = c,
     list = list,
     quote = quote,
@@ -208,6 +215,7 @@ expect_snapshot_helper <- function(lab, val,
                                    cran = FALSE,
                                    save = identity,
                                    load = identity,
+                                   tolerance = testthat_tolerance(),
                                    ...) {
   if (!cran && !interactive() && on_cran()) {
     skip("On CRAN")
@@ -219,7 +227,7 @@ expect_snapshot_helper <- function(lab, val,
     return(invisible())
   }
 
-  comp <- snapshotter$take_snapshot(val, save = save, load = load, ...)
+  comp <- snapshotter$take_snapshot(val, save = save, load = load, ..., tolerance = tolerance)
   hint <- paste0("Run `snapshot_accept('", snapshotter$file, "')` if this is a deliberate change")
 
   expect(

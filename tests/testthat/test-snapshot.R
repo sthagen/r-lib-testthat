@@ -26,7 +26,7 @@ test_that("multiple outputs of same type are collapsed", {
 })
 
 test_that("always checks error status", {
-  expect_failure(expect_snapshot(stop("!"), error = FALSE))
+  expect_error(expect_snapshot(stop("!"), error = FALSE))
   expect_failure(expect_snapshot(print("!"), error = TRUE))
 })
 
@@ -72,8 +72,13 @@ test_that("can control snapshot value details", {
   expect_snapshot_value(1.2, tolerance = 0.1)
 })
 
+test_that("tolerance passed to check_roundtrip", {
+  expect_snapshot_value(0.900000000000001, style = "json")
+})
+
 test_that("reparse handles common cases", {
   roundtrip <- function(x) reparse(deparse(x))
+  expect_equal(roundtrip(-1), -1)
   expect_equal(roundtrip(c(1, 2, 3)), c(1, 2, 3))
   expect_equal(roundtrip(list(1, 2, 3)), list(1, 2, 3))
   expect_equal(roundtrip(mtcars), mtcars)

@@ -147,3 +147,7 @@
 
     1.1
 
+# tolerance passed to check_roundtrip
+
+    0.9
+

@@ -82,3 +82,34 @@ test_that("errors in test doesn't change snapshot", {
   )
   snapper$end_file()
 })
+
+test_that("skips and unexpected errors reset snapshots", {
+  regenerate <- FALSE
+
+  if (regenerate) {
+    withr::local_envvar(c(TESTTHAT_REGENERATE_SNAPS = "true"))
+  }
+
+  catch_cnd(
+    test_file(
+      test_path("test-snapshot", "test-snapshot.R"),
+      reporter = NULL
+    )
+  )
+
+  path <- "test-snapshot/_snaps/snapshot.md"
+  stopifnot(file.exists(path))
+
+  snaps <- snap_from_md(read_lines(path))
+  titles <- c("errors reset snapshots", "skips reset snapshots")
+  expect_true(all(titles %in% names(snaps)))
+})
+
+test_that("`expect_error()` can fail inside `expect_snapshot()`", {
+  out <- test_file(
+    test_path("test-snapshot", "test-expect-condition.R"),
+    reporter = NULL
+  )
+  err <- out[[1]]$results[[1]]
+  expect_match(err$message, "did not throw the expected error")
+})
