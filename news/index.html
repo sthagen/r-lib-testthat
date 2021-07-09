@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.4.9000</span>
       </span>
     </div>
 
@@ -191,6 +191,69 @@
       <small>Source: <a href='https://github.com/r-lib/testthat/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="testthat-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="development version">
+<a href="#testthat-development-version" class="anchor"></a>testthat (development version)<small> Unreleased </small>
+</h1>
+<ul>
+<li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot_value()</a></code> now has an explicit <code>tolerance</code> which uses the testthat default, thus making it more like <code><a href="../reference/equality-expectations.html">expect_equal()</a></code> rather than <code><a href="../reference/equality-expectations.html">expect_identical()</a></code>. Set to <code>NULL</code> if you want precise comparisons (<a href='https://github.com/r-lib/testthat/issues/1309'>#1309</a>).</p></li>
+<li><p><code><a href="../reference/compare.html">testthat_tolerance()</a></code> no longer has an unused argument.</p></li>
+<li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot_value(style = "deparse")</a></code> now works with negative values (<a href='https://github.com/r-lib/testthat/issues/1342'>#1342</a>).</p></li>
+<li>
+<p>Condition expectations now consistently return the expected condition instead of the return value (<a href='https://github.com/r-lib/testthat/issues/1371'>#1371</a>). Previously, they would only return the condition if the return value was <code>NULL</code>, leading to inconsistent behaviour.</p>
+<p>This is a breaking change (it only affects edition 3). Where you could previously do:</p>
+<pre><code><a href="../reference/equality-expectations.html">expect_equal(expect_warning(f(), "warning"), "value")</a></code></pre>
+<p>You must now use condition expectations on the outside:</p>
+<pre><code><a href="../reference/expect_error.html">expect_warning(expect_equal(f(), "value"), "warning")
+
+# Equivalently, save the value before inspection
+expect_warning(value &lt;- f(), "warning")
+expect_equal(value, "value")
+
+# If you use `=` instead of `&lt;-` be sure to disambiguate
+# assignment and argument passing with braces
+expect_warning({ value = f() }, "warning")
+expect_equal(value, "value")</a></code></pre>
+<p>This breaking change makes testthat more consistent. It also makes it possible to inspect both the value and the warning, which would require additional tools otherwise.</p>
+</li>
+</ul>
+</div>
+    <div id="testthat-304" class="section level1">
+<h1 class="page-header" data-toc-text="3.0.4">
+<a href="#testthat-304" class="anchor"></a>testthat 3.0.4<small> 2021-07-01 </small>
+</h1>
+<ul>
+<li><p>The vendored Catch code used for <code><a href="../reference/use_catch.html">use_catch()</a></code> now uses a constant value for the stack size rather than relying on SIGSTKSZ. This fixes compatibility for recent glibc versions where SIGSTKSZ is no longer a constant.</p></li>
+<li><p>Fixed an issue that caused errors and early termination of tests on R &lt;= 3.6 when a failing condition expectation was signalled inside a snapshot.</p></li>
+</ul>
+</div>
+    <div id="testthat-303" class="section level1">
+<h1 class="page-header" data-toc-text="3.0.3">
+<a href="#testthat-303" class="anchor"></a>testthat 3.0.3<small> 2021-06-16 </small>
+</h1>
+<ul>
+<li>
+<p><code><a href="../reference/expect_snapshot_file.html">expect_snapshot_file()</a></code> gains a <code>compare</code> argument (<a href='https://github.com/r-lib/testthat/issues/1378'>#1378</a>, <a href='https://github.com/nbenn'>@nbenn</a>). This is a customisation point for how to compare old and new snapshot files.</p>
+<p>The functions <code><a href="../reference/expect_snapshot_file.html">compare_file_binary()</a></code> and <code><a href="../reference/expect_snapshot_file.html">compare_file_text()</a></code> are now exported from testthat to be supplied as <code>compare</code> argument. These implement the same behaviour as the old <code>binary</code> argument which is now deprecated.</p>
+</li>
+<li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot()</a></code> no longer deletes snapshots when an unexpected error occurs.</p></li>
+<li><p>New <code><a href="../reference/expect_snapshot_file.html">announce_snapshot_file()</a></code> function for developers of testthat extensions. Announcing a snapshot file allows testthat to preserve files that were not generated because of an unexpected error or a <code><a href="../reference/skip.html">skip()</a></code> (<a href='https://github.com/r-lib/testthat/issues/1393'>#1393</a>). Unannounced files are automatically deleted during cleanup if the generating code isn’t called.</p></li>
+<li><p>New expectation: <code><a href="../reference/expect_match.html">expect_no_match()</a></code>. It complements <code><a href="../reference/expect_match.html">expect_match()</a></code> by checking if a string <strong>doesn’t match</strong> a regular expression (<a href='https://github.com/michaelquinn32'>@michaelquinn32</a>, <a href='https://github.com/r-lib/testthat/issues/1381'>#1381</a>).</p></li>
+<li><p>Support setting the testthat edition via an environment variable (<code>TESTTHAT_EDITION</code>) as well (<a href='https://github.com/michaelquinn32'>@michaelquinn32</a>, <a href='https://github.com/r-lib/testthat/issues/1386'>#1386</a>).</p></li>
+</ul>
+</div>
+    <div id="testthat-302" class="section level1">
+<h1 class="page-header" data-toc-text="3.0.2">
+<a href="#testthat-302" class="anchor"></a>testthat 3.0.2<small> 2021-02-14 </small>
+</h1>
+<ul>
+<li><p>Failing expectations now include a backtrace when they’re not called directly from within <code><a href="../reference/test_that.html">test_that()</a></code> but are instead wrapped in some helper function (<a href='https://github.com/r-lib/testthat/issues/1307'>#1307</a>).</p></li>
+<li><p><code>CheckReporter</code> now only records warnings when not on CRAN. Otherwise failed CRAN revdep checks tend to be cluttered up with warnings (<a href='https://github.com/r-lib/testthat/issues/1300'>#1300</a>). It automatically cleans up <code>testthat-problems.rds</code> left over from previous runs if the latest run is succesful (<a href='https://github.com/r-lib/testthat/issues/1314'>#1314</a>).</p></li>
+<li><p><code><a href="../reference/inheritance-expectations.html">expect_s3_class()</a></code> and <code><a href="../reference/inheritance-expectations.html">expect_s4_class()</a></code> can now check that an object <em>isn’t</em> an S3 or S4 object by supplying <code>NA</code> to the second argument (<a href='https://github.com/r-lib/testthat/issues/1321'>#1321</a>).</p></li>
+<li><p><code><a href="../reference/inheritance-expectations.html">expect_s3_class()</a></code> and <code><a href="../reference/inheritance-expectations.html">expect_s4_class()</a></code> format class names in a less confusing way (<a href='https://github.com/r-lib/testthat/issues/1322'>#1322</a>).</p></li>
+<li><p><code><a href="../reference/expect_snapshot.html">expect_snapshot()</a></code> collapses multiple adjacent headings of the same, so that, e.g., if you have multiple lines of code in a row, you’ll only see one “Code:” heading (<a href='https://github.com/r-lib/testthat/issues/1311'>#1311</a>).</p></li>
+</ul>
+</div>
     <div id="testthat-301" class="section level1">
 <h1 class="page-header" data-toc-text="3.0.1">
 <a href="#testthat-301" class="anchor"></a>testthat 3.0.1<small> 2020-12-17 </small>
@@ -553,7 +616,7 @@
 <a href="#quasiquotation-support" class="anchor"></a>Quasiquotation support</h3>
 <p>All expectations can now use unquoting (<a href='https://github.com/r-lib/testthat/issues/626'>#626</a>). This makes it much easier to generate informative failure messages when running tests in a for loop.</p>
 <p>For example take this test:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="va">i</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">)</span> <span class="va">i</span> <span class="op">*</span> <span class="fl">9</span> <span class="kw">else</span> <span class="va">i</span> <span class="op">*</span> <span class="fl">10</span>
 
@@ -561,7 +624,7 @@
   <span class="fu"><a href="../reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="va">i</span><span class="op">)</span>, <span class="va">i</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>When it fails, you’ll see the message <code>Error: `f(i)` not equal to `i * 10`</code>. That’s hard to diagnose because you don’t know which iteration caused the problem!</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/equality-expectations.html">expect_equal</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">i</span><span class="op">)</span>, <span class="op">!</span><span class="op">!</span><span class="op">(</span><span class="va">i</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
@@ -588,7 +651,7 @@
 <li><p>All files are now read and written as UTF-8 (<a href='https://github.com/r-lib/testthat/issues/510'>#510</a>, <a href='https://github.com/r-lib/testthat/issues/605'>#605</a>).</p></li>
 <li>
 <p><code><a href="../reference/is_testing.html">is_testing()</a></code> allows you to tell if your code is being run inside a testing environment (<a href='https://github.com/r-lib/testthat/issues/631'>#631</a>). Rather than taking a run-time dependency on testthat you may want to inline the function into your own package:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">is_testing</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"TESTTHAT"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span>
@@ -707,7 +770,7 @@
 <a href="#new-expectations-1" class="anchor"></a>New expectations</h2>
 <p>The expectation system got a thorough overhaul (<a href='https://github.com/r-lib/testthat/issues/217'>#217</a>). This primarily makes it easier to add new expectations in the future, but also included a thorough review of the documentation, ensuring that related expectations are documented together, and have evocative names.</p>
 <p>One useful change is that most expectations invisibly return the input <code>object</code>. This makes it possible to chain together expectations with magrittr:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/inheritance-expectations.html">expect_type</a></span><span class="op">(</span><span class="st">"integer"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
