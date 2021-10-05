@@ -47,8 +47,7 @@
 
 
 <meta property="og:title" content="Snapshot testing — expect_snapshot" />
-<meta property="og:description" content="
-Snapshot tests (aka golden tests) are similar to unit tests except that the
+<meta property="og:description" content="Snapshot tests (aka golden tests) are similar to unit tests except that the
 expected result is stored in a separate file that is managed by testthat.
 Snapshot tests are useful for when the expected value is large, or when
 the intent of the code is something that can only be verified by a human
@@ -105,7 +104,7 @@ expect_known_value(), and expect_known_hash().)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0.9000</span>
       </span>
     </div>
 
@@ -155,6 +154,9 @@ expect_known_value(), and expect_known_hash().)" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2021/10/testthat-3-1/">Version 3.1.0</a>
+    </li>
     <li>
       <a href="https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/">Version 3.0.0</a>
     </li>
@@ -209,8 +211,7 @@ expect_known_value(), and expect_known_hash().)" />
     </div>
 
     <div class="ref-description">
-    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
-<p>Snapshot tests (aka golden tests) are similar to unit tests except that the
+    <p>Snapshot tests (aka golden tests) are similar to unit tests except that the
 expected result is stored in a separate file that is managed by testthat.
 Snapshot tests are useful for when the expected value is large, or when
 the intent of the code is something that can only be verified by a human
@@ -227,18 +228,25 @@ output from code.</p></li>
 <code><a href='expect_known_output.html'>expect_known_value()</a></code>, and <code><a href='expect_known_output.html'>expect_known_hash()</a></code>.)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>expect_snapshot</span><span class='op'>(</span><span class='va'>x</span>, cran <span class='op'>=</span> <span class='cn'>FALSE</span>, error <span class='op'>=</span> <span class='cn'>FALSE</span>, transform <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>expect_snapshot</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  cran <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  error <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  transform <span class='op'>=</span> <span class='cn'>NULL</span>,
+  variant <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
-<span class='fu'>expect_snapshot_output</span><span class='op'>(</span><span class='va'>x</span>, cran <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>expect_snapshot_output</span><span class='op'>(</span><span class='va'>x</span>, cran <span class='op'>=</span> <span class='cn'>FALSE</span>, variant <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>expect_snapshot_error</span><span class='op'>(</span><span class='va'>x</span>, class <span class='op'>=</span> <span class='st'>"error"</span>, cran <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>expect_snapshot_error</span><span class='op'>(</span><span class='va'>x</span>, class <span class='op'>=</span> <span class='st'>"error"</span>, cran <span class='op'>=</span> <span class='cn'>FALSE</span>, variant <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
 <span class='fu'>expect_snapshot_value</span><span class='op'>(</span>
   <span class='va'>x</span>,
   style <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"json"</span>, <span class='st'>"json2"</span>, <span class='st'>"deparse"</span>, <span class='st'>"serialize"</span><span class='op'>)</span>,
   cran <span class='op'>=</span> <span class='cn'>FALSE</span>,
   tolerance <span class='op'>=</span> <span class='fu'><a href='compare.html'>testthat_tolerance</a></span><span class='op'>(</span><span class='op'>)</span>,
-  <span class='va'>...</span>
+  <span class='va'>...</span>,
+  variant <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -267,10 +275,23 @@ text from the output. Should take a character vector of lines as input
 and return a modified character vector as output.</p></td>
     </tr>
     <tr>
+      <th>variant</th>
+      <td><p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a></p>
+<p>If not-<code>NULL</code>, results will be saved in <code>_snaps/{variant}/{test.md}</code>,
+so <code>variant</code> must be a single string of alphanumeric characters suitable
+for use as a directory name.</p>
+<p>You can variants to deal with cases where the snapshot output varies
+and you want to capture and test the variations. Common use cases include
+variations for operating system, R version, or version of key dependency.
+Variants are an advanced feature. When you use them, you'll need to
+carefully think about your testing strategy to ensure that all important
+variants are covered by automated tests, and ensure that you have a way
+to get snapshot changes out of your CI system and back into the repo.</p></td>
+    </tr>
+    <tr>
       <th>class</th>
-      <td><p>Expected class of condition, e.g. use <code>error</code> for errors,
-<code>warning</code> for warnings, <code>message</code> for messages. The expectation will
-always fail (even on CRAN) if a condition of this class isn't seen
+      <td><p>Class of expect error condition. The expectation will
+always fail (even on CRAN) if an error of this class isn't seen
 when executing <code>x</code>.</p></td>
     </tr>
     <tr>
@@ -298,7 +319,7 @@ are not available, in which case the test is skipped.</p></td>
     <tr>
       <th>...</th>
       <td><p>For <code>expect_snapshot_value()</code> only, passed on to
-<code><a href='https://rdrr.io/pkg/waldo/man/compare.html'>waldo::compare()</a></code> so you can control the details of the comparison.</p></td>
+<code><a href='https://waldo.r-lib.org/reference/compare.html'>waldo::compare()</a></code> so you can control the details of the comparison.</p></td>
     </tr>
     </table>
 

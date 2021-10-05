@@ -101,7 +101,7 @@ skipping tests where it's known that images can't be reproduced exactly." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">testthat</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0.9000</span>
       </span>
     </div>
 
@@ -151,6 +151,9 @@ skipping tests where it's known that images can't be reproduced exactly." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li class="dropdown-header">Releases</li>
+    <li>
+      <a href="https://www.tidyverse.org/blog/2021/10/testthat-3-1/">Version 3.1.0</a>
+    </li>
     <li>
       <a href="https://www.tidyverse.org/blog/2020/10/testthat-3-0-0/">Version 3.0.0</a>
     </li>
@@ -224,7 +227,8 @@ skipping tests where it's known that images can't be reproduced exactly.</p>
   name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>,
   binary <span class='op'>=</span> <span class='fu'>lifecycle</span><span class='fu'>::</span><span class='fu'><a href='https://lifecycle.r-lib.org/reference/deprecated.html'>deprecated</a></span><span class='op'>(</span><span class='op'>)</span>,
   cran <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  compare <span class='op'>=</span> <span class='va'>compare_file_binary</span>
+  compare <span class='op'>=</span> <span class='va'>compare_file_binary</span>,
+  variant <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 
 <span class='fu'>announce_snapshot_file</span><span class='op'>(</span><span class='va'>path</span>, name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span><span class='op'>)</span>
@@ -264,6 +268,13 @@ to <code>compare_file_text</code> to compare files line-by-line, ignoring
 the difference between Windows and Mac/Linux line endings.</p></td>
     </tr>
     <tr>
+      <th>variant</th>
+      <td><p>If not-<code>NULL</code>, results will be saved in
+<code>_snaps/{variant}/{test}/{name}.{ext}</code>. This allows you to create
+different snapshots for different scenarios, like different operating
+systems or different R versions.</p></td>
+    </tr>
+    <tr>
       <th>old, new</th>
       <td><p>Paths to old and new snapshot files.</p></td>
     </tr>
@@ -296,7 +307,7 @@ code wasn't executed because of an unexpected error or because of a
 <span class='op'>}</span>
 <span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'>save_png</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>path</span>
-</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpcGihjS/file19981eeddbc1.png"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpvLoSKI/file3c011ceaaff0.png"</div><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='fu'>expect_snapshot_file</span><span class='op'>(</span><span class='fu'>save_png</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>mtcars</span><span class='op'>$</span><span class='va'>mpg</span><span class='op'>)</span><span class='op'>)</span>, <span class='st'>"plot.png"</span><span class='op'>)</span>
 <span class='op'>}</span>
