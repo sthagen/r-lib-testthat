@@ -1,32 +1,47 @@
 # testthat (development version)
 
+# testthat 3.1.0
+
+## Snapshot tests
+
+* `expect_snapshot()` is no longer experimental.
+
+* `expect_snapshot()` and friends gets an experimental new `variant` argument 
+  which causes the snapshot to be saved in `_snaps/{variant}/{test}.md` instead 
+  of `_snaps/{test}.md`. This allows you to generate (and compare) unique
+  snapshots for different scenarios like operating system or R version (#1143).
+
 * `expect_snapshot()` gains a `transform` argument, which should be a function that
   takes a character vector of lines and returns a modified character vector
   of lines. This makes it easy to remove sensitive (e.g. API keys) or 
   stochastic (e.g. random temporary directory names) from snapshot output 
   (#1345).
 
-* Tests that generate only warnings or messages (and don't contain any
-  expectations) now automatically and correctly generate an "empty test"
-  skip.
+* `expect_snapshot_file()` now replaces previous `.new` snapshot if code
+  fails again with a different value.
 
-* Multi-line skips only show the first line in the skip summary.
+* `expect_snapshot_value()` now has an explicit `tolerance` argument which 
+  uses the testthat default, thus making it more like `expect_equal()` rather 
+  than `expect_identical()`. Set it to `NULL` if you want precise comparisons 
+  (#1309). `expect_snapshot_value(style = "deparse")` now works with negative 
+  values (#1342).
 
-* `expect_snapshot_value()` now has an explicit `tolerance` which uses the 
-  testthat default, thus making it more like `expect_equal()` rather than
-  `expect_identical()`. Set to `NULL` if you want precise comparisons (#1309).
+* If a test containing multiple snapshots fails (or skips) in between snapshots,
+  the later snapshots are now silently restored. (Previously this warned and
+  reset all snapshots, not just later snapshots).
+  
+* If you have multiple tests with the same name that use snapshots (not a good 
+  idea), you will no longer get a warning. Instead the snapshots will be 
+  aggregated across the tests.
 
-* `testthat_tolerance()` no longer has an unused argument.
-
-* `expect_snapshot_value(style = "deparse")` now works with negative values
-  (#1342).
+## Breaking changes
 
 * Condition expectations now consistently return the expected
   condition instead of the return value (#1371). Previously, they
   would only return the condition if the return value was `NULL`,
   leading to inconsistent behaviour.
   
-  This is a breaking change (it only affects edition 3). Where you
+  This is a breaking change to the 3rd edition. Where you
   could previously do:
   
   ```
@@ -41,16 +56,45 @@
   # Equivalently, save the value before inspection
   expect_warning(value <- f(), "warning")
   expect_equal(value, "value")
-  
-  # If you use `=` instead of `<-` be sure to disambiguate
-  # assignment and argument passing with braces
-  expect_warning({ value = f() }, "warning")
-  expect_equal(value, "value")
   ```
   
   This breaking change makes testthat more consistent. It also makes
   it possible to inspect both the value and the warning, which would
-  require additional tools otherwise.
+  otherwise require additional tools.
+
+## Minor improvements and bug fixes
+
+* Errors in test blocks now display the call if stored in the condition object
+  (#1418). Uncaught errors now show their class (#1426).
+
+* Multi-line skips only show the first line in the skip summary.
+
+* `expr_label()`, which is used to concisely describe expressions used in
+  expectations, now does a better job of summarising infix function (#1442).
+
+* `local_reproducible_output()` now sets the `max.print` option to 99999 
+  (the default), so your tests are unaffected by any changes you might've
+  made in your `.Rprofile` (1367).
+
+* `ProgressReporter` (the default only) now stops at the end of a file; this 
+  ensures that you see the results of all related tests, and ensures that 
+  snapshots are handled consistently (#1402). 
+  
+* `ProgressReporter` now uses an env var to adjust the maximum number of 
+  failures. This makes it easier to adjust when the tests are run in a
+  subprocess, as is common when using RStudio (#1450).
+
+* `skip_on_os()` gains an `arch` argument so you can also choose to skip
+  selected architectures (#1421). 
+
+* `test_that()` now correctly errors when an expectation fails when run 
+  interactively (#1430).
+
+* `test_that()` now automatically and correctly generate an "empty test"
+  skip if it only generates warnings or messages (and doesn't contain any
+  expectations).
+
+* `testthat_tolerance()` no longer has an unused argument.
 
 # testthat 3.0.4
   
